@@ -1,0 +1,33 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.bold{
+    font-weight: bold;
+    
+}
+.form-Body{
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: white;
+}
+.form-panel{
+    border: 1px solid white;
+    
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.image-panel{
+    background-color: dodgerblue;
+    width: 50vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,23 @@
+.Body{
+    background-color: dodgerblue;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.color-red{
+    color: #eb1111;
+}
+.link{
+    color: white;
+    text-decoration: none;
+}
+
+.form-container{
+  
+    width: 50vw;
+   
+    padding: 1rem;
+   
+}
