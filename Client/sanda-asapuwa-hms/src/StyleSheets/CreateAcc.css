@@ -24,10 +24,18 @@
     flex-direction: column;
 }
 .image-panel{
-    background-color: dodgerblue;
+    background-color:#0271ff;
     width: 50vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+.image-panel .logo{
+    margin-top: -25rem;
+    margin-bottom: 5rem;
+}
+.color-white{
+    color: white;
 }

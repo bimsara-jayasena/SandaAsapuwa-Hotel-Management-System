@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import Logo from '../Resources/sanda.jpg';
 import { FloatingLabel, Form, InputGroup } from "react-bootstrap";
 import '../StyleSheets/CreateAcc.css';
 import Col from 'react-bootstrap/Col';
@@ -21,19 +22,18 @@ export default function AccountCreate(){
         <div>
            <section className="form-Body">
            <section className="image-panel">
-               <h1 className="">Welcome to Sanda Asapuwa</h1>
+           <div className="logo">
+                    <img src={Logo}/>
+                </div>
+               <h1 className="color-white">Welcome to Sanda Asapuwa</h1>
                </section>
                <section className="form-panel">
+
                 <h1>Create New Account</h1>
                 <div className="form-container">
               
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <Form.Group>
-                        <Form.Label controlId="floatingInput" label="user Id"/>
-                        <Form.Control type="text" placeholder="Employe ID" required/>
-                        <Form.Control.Feedback type="invalid" className="bold">Enter Correct Employee Id</Form.Control.Feedback>
-                       
-                    </Form.Group>
+                   
 
                     <Form.Group>
                         <Form.Label controlId="floatingInput" label="user First Name"/>
@@ -60,12 +60,24 @@ export default function AccountCreate(){
                     </Form.Group>
 
                     <Form.Group>
+                        <Form.Label controlId="lblContactNo"/>
+                        <Form.Control type="tp" placeholder="Contact No" required/>
+                        <Form.Control.Feedback type="invalid" className="bold">Enter your contact number</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label controlId="lblAdd"/>
+                        <Form.Control type="text" placeholder="Address" required/>
+                        <Form.Control.Feedback type="invalid" className="bold">Enter your Address</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group>
                         <Form.Label controlId="floatingInput" label="user pw"/>
                         <Form.Control type="password" placeholder="Password" required/>
                         <Form.Control.Feedback type="invalid" className="bold">Enter Correct Password</Form.Control.Feedback>
                        
                     </Form.Group>
-                    <Button type="submit" ><div className="bold">Create</div></Button>
+                    <Button type="submit" className="btnCreate" ><div className="bold">Create</div></Button>
                 </Form>
                
                    

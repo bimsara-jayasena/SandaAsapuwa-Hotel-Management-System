@@ -1,10 +1,23 @@
 .Body{
-    background-color: dodgerblue;
+    background-color:#0271ff;
     height: 100vh;
     display: flex;
-    justify-content: center;
+   align-items: center;
     flex-direction: column;
-    align-items: center;
+  
+    padding: 2rem;
+    gap: 1rem;
+}
+.logo{
+    position: relative;
+   
+    padding-top: -5rem;
+    width: 20rem;
+    height: 20rem;
+}
+.logo img{
+    position: relative;
+    width: 100%;
 }
 .color-red{
     color: #eb1111;
@@ -15,9 +28,26 @@
 }
 
 .form-container{
-  
+   
     width: 50vw;
-   
-    padding: 1rem;
-   
+    padding-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.form-container Form{
+  
+    
+    width: 25rem;
+}
+.form-container Form Button{
+    margin-top: 1rem;
+}
+.bold{
+    font-weight: bold;
+    
+}
+.color-white{
+    color: white;
 }
