@@ -1,11 +1,13 @@
 package CodeLK.me.SandaAsapuwaHMS.Employees;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class EmpService {
+    @Autowired
     private EmpRepository repository;
     public List<Employes> getAllEmployees(){
         return repository.findAll();

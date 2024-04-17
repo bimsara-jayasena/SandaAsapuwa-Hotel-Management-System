@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/Employes")
@@ -15,6 +16,11 @@ import java.util.Map;
 public class EmpController {
     @Autowired
     private EmpService service;
+
+    @GetMapping
+    public ResponseEntity<List<Employes>> showEmployes(){
+        return new ResponseEntity<List<Employes>>(service.getAllEmployees(),HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<Employes>addEmploye(@RequestBody Map<String, String> payload){
         return new ResponseEntity<Employes>(service.addEmployee(
