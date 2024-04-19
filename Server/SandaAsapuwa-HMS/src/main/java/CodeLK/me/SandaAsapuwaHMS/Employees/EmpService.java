@@ -17,4 +17,11 @@ public class EmpService {
         repository.insert(employes);
         return employes;
     }
+    public Employes updateEmployee(String firstName, String lastName, String eMail, String address, String contactNo, String position){
+        Employes employes=new Employes(firstName, lastName, eMail, address, contactNo, position);
+        repository.insert(employes);
+        return employes;
+    }
+
+
 }

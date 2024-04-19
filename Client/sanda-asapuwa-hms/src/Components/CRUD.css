@@ -1,0 +1,42 @@
+.crud-body{
+    border-radius: 1rem;
+    position: relative;
+   background-color: dodgerblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50vw;
+    height: 40vw;
+}
+.crud-form-container{
+   
+   border: 1px solid red;
+    width: 50vw;
+    padding-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.crud-form-container Form{
+  
+    
+    width: 25rem;
+}
+.crud-form-container Form Button{
+    margin-top: 1rem;
+}
+.crud-display-none{
+   
+    transform: scale(0);
+    width: 0vw;
+    height: 0vh;
+    opacity: 0;
+    display: none;
+    transition: 0.5s;
+}
+.crud-display-block{
+    transform: scale(1);
+    transition: 0.2s;
+}
