@@ -1,0 +1,46 @@
+.side-panel-body{
+    display: flex;
+    justify-content: center;
+    height: auto;
+   
+
+}
+.side-panel{
+    position: fixed;
+  
+    width: 20vw;
+    height: 100vh;
+    background: dodgerblue;
+    display: flex;
+    flex-direction: column;
+   
+    gap: 4rem;
+}
+.side-btn-room{
+    border: none;
+    width: 100%;
+    height: 4rem;
+    background-color: dodgerblue;
+    color: white;
+    font-size: 2rem;
+}
+.side-btn-room:hover{
+    background-color: rgb(247, 247, 247);
+    color: dodgerblue;
+
+}
+
+.side-panel-header{
+    position: relative;
+    border-bottom: 1px solid white;
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    height: 10rem;
+    align-items: center;
+    gap:4em;
+}
+.visited{
+    background-color: rgb(247, 247, 247);
+    color: dodgerblue;
+}

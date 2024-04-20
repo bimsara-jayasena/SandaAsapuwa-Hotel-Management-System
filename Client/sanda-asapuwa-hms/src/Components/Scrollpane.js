@@ -3,6 +3,7 @@ import React from 'react';
 class ScrollPane extends React.Component {
   render() {
     const scrollPaneStyle = {
+      position:'relative',
       width: '78vw', // Adjust width as needed
       height: '85vh', // Adjust height as needed
       overflow: 'auto', // This enables scrolling

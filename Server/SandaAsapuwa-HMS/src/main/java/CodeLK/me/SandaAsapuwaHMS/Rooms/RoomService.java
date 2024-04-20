@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,23 +24,30 @@ public class RoomService {
     }
 
 
-    public Optional<Rooms> getRoom(String roomId){
-        return (repository.findByRoomId(roomId));
+    public Rooms getRoom(String roomId){
+        return (repository.findByroomId(roomId));
     }
-    public Rooms addRooms(String url,String availability){
-        Rooms rooms=new Rooms(url,availability);
+    public Rooms addRooms(MultipartFile image, String availability) {
+        byte[] imageData;
+        try {
+            imageData = image.getBytes(); // Get byte array of the image
+        } catch (IOException e) {
+            // Handle IOException
+            throw new RuntimeException("Failed to read image data", e);
+        }
+        Rooms rooms = new Rooms(availability);
+        rooms.setImage(imageData); // Set image data in the room object
         repository.insert(rooms);
         return rooms;
     }
-    public Rooms updateRooms(String url,String availability,String roomId){
-        Rooms rooms=new Rooms(url,availability);
-        repository.insert(rooms);
 
-        template.update(Rooms.class)
-                .apply(new Update().push("roomId").value(roomId))
-                .first();
-        return rooms;
-    }
+//    public Rooms updateRooms(String url,String availability,String roomId){
+//        Rooms rooms=repository.findByroomId(roomId);
+//        rooms.setAvailability(availability);
+//        rooms.setUrl(url);
+//
+//        return repository.save(rooms);
+//    }
     public String deleteRoom(String roomId){
         Rooms room=repository.findByroomId(roomId);
         repository.delete(room);

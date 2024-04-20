@@ -9,11 +9,19 @@
     width: 50vw;
     height: 40vw;
 }
+.logo{
+   
+    width: 10rem;
+    height: 120px;
+}
+ .logo img{
+    width: 100px;
+}
 .crud-form-container{
    
-   border: 1px solid red;
+  
     width: 50vw;
-    padding-top: 5rem;
+    padding-top:1rem;
     display: flex;
     justify-content: center;
     align-items: center;

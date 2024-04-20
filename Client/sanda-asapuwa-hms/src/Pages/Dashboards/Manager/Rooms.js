@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useState } from "react";
 import '../../../StyleSheets/manager.css';
-import MngSide from "../../../Components/MngSide";
+import SidePanel from "../../../Components/SidePanel";
 import UPDATE from '../../../Components/Update';
 import ADD from '../../../Components/Add';
 import DELETE from '../../../Components/Delete';
 import ScrollPane from "../../../Components/Scrollpane";
+import Logo from '../../..//Resources/icons8-lotus-64-white.png'
 import axios from 'axios';
 import  Button  from "react-bootstrap/Button";
 
@@ -50,27 +51,61 @@ export default function Rooms(){
         <div className="body">
            
             <section className={isclicked ? "navigation blur" : "navigation "}>
-               <MngSide/>
+               <SidePanel/>
             </section>
            
           
             <section className={isclicked ? "body-panel blur" : "body-panel "}>
+
             <h1>Rooms information</h1>
+
+                <div className="card-container">
+                    <div className="cards">
+                        <div>
+                            <img src={Logo}/>
+                            <h2>Total Rooms</h2>
+                        </div>
+                        <div>3</div>
+
+                    </div>
+                   
+                    <div className="cards">
+                    <div>
+                            <img src={Logo}/>
+                            <h2>Booked Rooms</h2>
+                        </div>
+                        <div>3
+                        </div>
+                    </div>
+                    
+                    <div className="cards">
+                    <div>
+                            <img src={Logo}/>
+                            <h2>Available Rooms</h2>
+                        </div>
+                        <div>
+                       
+                        3
+                        </div>
+                    </div>
+                </div>
+          
             
            <div className="scrollpane-container">
            <ScrollPane>
             {rooms.map((room)=>{
                     return(
                        <div>
-                        <div className="card-container">
-                            <div className="card-img">
+                        <div className="crud-container">
+                            <div className="crud-img">
                                 <img src={room.url}/>
                             </div>
-                            <div className="card-info">
-                                Room status: {room.availability}
+                            <div className="crud-info">
+                                Room status: {room.availability}<br/>
+                                Room Price:
                     
-                                <button id={room.roomId} className="btn-update" value="UPDATE"  onClick={(e)=>{upRoom(e)}}>Update</button>
-                                <button id={room.roomId} className="btn-delete" value="DELETE" onClick={(e)=>{delRoom(e)}}>Delete</button>
+                                <Button id={room.roomId} className="btn-update " value="UPDATE"  onClick={(e)=>{upRoom(e)}}>Update</Button>
+                                <Button id={room.roomId}  className="btn-delete btn-danger" value="DELETE" onClick={(e)=>{delRoom(e)}}>Delete</Button>
                             </div>
                         </div>
                        </div>
@@ -79,7 +114,7 @@ export default function Rooms(){
             </ScrollPane>
             
            </div>
-           <Button className="btnAdd" value="ADD" onClick={(e)=>{addRoom(e)}}>Add new Room</Button>
+           <Button className="btnAdd " value="ADD" onClick={(e)=>{addRoom(e)}}>Add new Room</Button>
                
                  
                 {/* <h2>Update Room</h2>

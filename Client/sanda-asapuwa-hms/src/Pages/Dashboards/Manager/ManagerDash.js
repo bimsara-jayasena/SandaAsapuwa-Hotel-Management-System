@@ -1,6 +1,6 @@
 import React from "react";
 import '../../../StyleSheets/manager.css';
-import SidePanel from '../../../Components/MngSide';
+import SidePanel from '../../../Components/SidePanel';
 export default function ManagerDash(){
     return(
         <div className="body">
