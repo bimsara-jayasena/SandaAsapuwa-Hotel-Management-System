@@ -31,7 +31,7 @@ public class RoomController {
     @PostMapping
     public ResponseEntity<Rooms> addRooms(@RequestParam("image") MultipartFile image,
                                           @RequestParam("availability") String availability) {
-        return new ResponseEntity<>(service.addRooms(image, availability), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.addRooms(availability), HttpStatus.CREATED);
     }
 
 //    @PutMapping("/id/{roomId}")

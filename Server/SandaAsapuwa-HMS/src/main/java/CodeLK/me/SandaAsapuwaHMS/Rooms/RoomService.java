@@ -27,16 +27,10 @@ public class RoomService {
     public Rooms getRoom(String roomId){
         return (repository.findByroomId(roomId));
     }
-    public Rooms addRooms(MultipartFile image, String availability) {
-        byte[] imageData;
-        try {
-            imageData = image.getBytes(); // Get byte array of the image
-        } catch (IOException e) {
-            // Handle IOException
-            throw new RuntimeException("Failed to read image data", e);
-        }
+    public Rooms addRooms(String availability) {
+
         Rooms rooms = new Rooms(availability);
-        rooms.setImage(imageData); // Set image data in the room object
+
         repository.insert(rooms);
         return rooms;
     }

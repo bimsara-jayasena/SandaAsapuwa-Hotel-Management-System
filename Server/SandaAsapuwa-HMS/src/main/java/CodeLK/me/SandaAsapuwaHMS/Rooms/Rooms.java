@@ -21,7 +21,7 @@ public class Rooms {
         private ObjectId id;
 
         private String roomId;
-        private Binary image;
+
         private  String availability;
 
         public Rooms(String availability){
@@ -36,10 +36,5 @@ public class Rooms {
     public void setAvailability(String availability) {
         this.availability = availability;
     }
-    public void setImage(byte[] image){
-           this.image=new Binary(image);
-    }
-    public byte[] getImage(){
-            return this.image.getData();
-    }
+
 }
