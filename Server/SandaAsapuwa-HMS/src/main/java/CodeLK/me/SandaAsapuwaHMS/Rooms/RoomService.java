@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,34 +20,42 @@ public class RoomService {
     @Autowired
     private MongoTemplate template;
 
-    public List<Rooms> getAllRooms(){
-        return (repository.findAll());
+    public List<RoomDTO> getAllRooms(){
+        List<Rooms> rooms=repository.findAll();
+        List<RoomDTO> roomDTOS=rooms.stream().map((room)->{
+//            String file= Base64.getEncoder().encodeToString(room.getImages());
+            RoomDTO roomDTO=new RoomDTO(room.getRoomId(),room.getAvailability(), room.getImages());
+            return roomDTO;
+        }).toList();
+        return roomDTOS;
     }
 
+    public Rooms addRooms(String availability,String file) throws IOException {
 
-    public Rooms getRoom(String roomId){
-        return (repository.findByroomId(roomId));
-    }
-    public Rooms addRooms(String availability) {
-
-        Rooms rooms = new Rooms(availability);
+        Rooms rooms = new Rooms(availability, file);
 
         repository.insert(rooms);
         return rooms;
     }
 
-//    public Rooms updateRooms(String url,String availability,String roomId){
-//        Rooms rooms=repository.findByroomId(roomId);
-//        rooms.setAvailability(availability);
-//        rooms.setUrl(url);
+//    public Rooms updateRoom(String roomId,String availability,String file) throws IOException {
 //
-//        return repository.save(rooms);
+//        Rooms rooms = repository.findByroomId(roomId);
+//        rooms.setAvailability(availability);
+//        rooms.setImages(file);
+//
+//        repository.save(rooms);
+//        return rooms;
 //    }
-    public String deleteRoom(String roomId){
-        Rooms room=repository.findByroomId(roomId);
-        repository.delete(room);
-        return "Removed";
+//
+//    public String deleteRoom(String id){
+//        Rooms rooms=repository.findByroomId(id);
+//        repository.delete(rooms);
+//        return "Room Removed";
+//
+//    }
 
-    }
+
+
 
 }

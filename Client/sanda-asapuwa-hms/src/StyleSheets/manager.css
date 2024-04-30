@@ -5,15 +5,42 @@
     box-sizing: border-box;
 }
 .body{
+   /*  position: relative; */
+  
     display: flex;
     justify-content: center;
     height: auto;
    
 
 }
-
-
+.loading-screen-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+.loading-screen{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+   
+    filter: blur(5px);
+    z-index: 1;
+}
+.loading-spinner{
+    position: absolute;
+    z-index: 2;
+}
+.navigation{
+    position: relative;
+   
+}
 .body-panel{
+   /*  position: relative; */
+    border: 1px solid red;
     width: 80vw;
     height:auto;
     display: flex;
@@ -22,22 +49,99 @@
     align-items: center;
     
 }
+.search-bar{
+    position: relative;
+    margin-top: 1rem;
+    width: 50%;
+    height: 2rem;
+    
+}
+.card-container{
+   /*  position: relative; */
+  
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    width: 100%;
+    padding-left: 1.5rem;
+}
+.cards{
+    padding: 1rem;
+    margin-right: 1rem;
+   
+    border-radius: 5px;
+    background-color:#378af8;
+    display: flex;
+    width: 25rem;
+    gap: 1rem;
+}
+.cards div:first-child{
+   
+   display: flex;
+   justify-content: flex-start;
+   align-items: flex-start;
+   margin-left: 1rem;
+   flex-direction: column;
+   width: 18rem;
+   gap: 1rem;
+   color: white;
+}
+.cards div:nth-child(2){
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: white;
+    font-size: 5em;
+ }
+.card-container img{
+    width: 64px;
+}
+
+
 .btn-update,.btn-delete{
     width: 20rem;
     margin-top:1rem
 }
 .scrollpane-container{
-    margin-top: 2rem;
-    width: 100vw;
+   
+    
+    width: 100%;
+    height:40rem;
+    
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: center;
+    
 }
+
+.loading-screen-container-scrollpane{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:40rem;
+}
+.loading-screen-scollpane{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    height:40rem;
+    z-index: 1;
+    filter: blur(5px);
+    z-index: 1;
+}
+
 .crud-alert{
     position: absolute;
-    
+    border: 1px solid red;
+    border-radius: 15px;
+    background-color: dodgerblue;
     width: auto;
-    height: auto;
+    height: 80vh;
     
     display: flex;
     align-items: center;
@@ -103,6 +207,7 @@
     position: fixed;
     display: flex;
     justify-content: center;
+    align-items: center;
     
     width: 100vw;
     height:100%;
@@ -118,48 +223,43 @@
 .btnAdd{
 
     width: 20rem;
-    margin-top: 1rem;
-    margin-left: 4rem;
-}
-.card-container{
+    margin-top: 0.5rem;
    
-    
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-    width: 100vw;
 }
-.cards{
-    padding: 1rem;
-    margin-right: 1.5rem;
-   
-    border-radius: 5px;
-    background-color:#378af8;
-    display: flex;
-    width: 25rem;
-    gap: 1rem;
-}
-.cards div:first-child{
-   
-   display: flex;
-   justify-content: flex-start;
-   align-items: flex-start;
-   margin-left: 1rem;
-   flex-direction: column;
-   width: 18rem;
-   gap: 1rem;
-   color: white;
-}
-.cards div:nth-child(2){
+.button-update{
   
-    display: flex;
+    z-index: 2;
+}
+.align-items-center{
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+}
+Table tr{
+    cursor: pointer;
+}
+.card-container button{
+    border: none;
+}
+.card-container button:hover{
+    background-color:var(--bg-color);
+}
+.table-container{
+    position: relative;
    
-    color: white;
-    font-size: 5em;
- }
-.card-container img{
-    width: 64px;
+    width: 100%;
+    height: 50rem;
+}
+.table-container .table Table tr{
+   
+    text-align: center;
+    vertical-align: middle;
+    
+    height: 5rem;
+}
+.table-container Button{
+    margin: 1rem;
+}
+.test-container{
+    border: 1px solid red;
+    height: 10rem;
 }

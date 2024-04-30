@@ -24,17 +24,39 @@ public class Rooms {
 
         private  String availability;
 
-        public Rooms(String availability){
+        private  String images;
+        public Rooms(String availability,String images){
             this.roomId = this.generateRoomId();
-
+            this.images=images;
             this.availability=availability;
         }
         private String generateRoomId(){
         return UUID.randomUUID().toString();
     }
 
+
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
     public void setAvailability(String availability) {
         this.availability = availability;
     }
 
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
 }

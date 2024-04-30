@@ -7,15 +7,22 @@
     font-weight: bold;
     
 }
+.create-account-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
 .form-Body{
     
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    
     background-color: white;
 }
 .form-panel{
-    border: 1px solid white;
+  
     
     width: 50vw;
     display: flex;
@@ -24,6 +31,7 @@
     flex-direction: column;
 }
 .image-panel{
+   
     background-color:#0271ff;
     width: 50vw;
     height: 100vh;
@@ -32,10 +40,64 @@
     align-items: center;
     flex-direction: column;
 }
-.image-panel .logo{
+.image-panel .account-page-logo{
+  
+  
+   
     margin-top: -25rem;
     margin-bottom: 5rem;
 }
+.account-page-logo img{
+   
+    width: 20rem;
+}
 .color-white{
     color: white;
+}
+.welcome-alert-container{
+    position: absolute;
+    color: white;
+   
+    border-radius: 0.5rem;
+    background-color:#0271ff;
+    width: 80rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5rem;
+    align-items: center;
+    transform: scale(0);
+    z-index: 5;
+}
+.welcome-alert-container img{
+    width: 20rem;
+}
+.blur{
+    filter: blur(5px);
+}
+
+.display-block{
+    transform: scale(1);
+    transition: 0.2s;
+}
+.copy{
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    margin-left: 1rem;                            
+}
+.copy input[type='text']{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.id-body{
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

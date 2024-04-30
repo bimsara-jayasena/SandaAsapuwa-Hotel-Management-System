@@ -1,4 +1,5 @@
 .crud-body{
+    
     border-radius: 1rem;
     position: relative;
    background-color: dodgerblue;
@@ -7,7 +8,7 @@
     align-items: center;
     flex-direction: column;
     width: 50vw;
-    height: 40vw;
+    height: auto
 }
 .logo{
    
@@ -47,4 +48,24 @@
 .crud-display-block{
     transform: scale(1);
     transition: 0.2s;
+}
+.display-flex{
+    border: 1px solid red;
+    display: flex;
+    
+}
+.width-20{
+    width: 40rem;
+}
+.custom{
+    border: 1px solid red;
+    background-color: transparent;
+}
+.update-form{
+    border: none;
+    text-align: center;
+    background-color: transparent;
+}
+.update-alert{
+    border: 1px solid red;
 }

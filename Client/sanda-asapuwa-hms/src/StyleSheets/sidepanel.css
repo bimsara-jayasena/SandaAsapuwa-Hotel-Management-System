@@ -1,26 +1,25 @@
-.side-panel-body{
-    display: flex;
-    justify-content: center;
-    height: auto;
-   
 
+.side-panel-body{
+    height: 100vh;
+    position: relative;
+    
+    
 }
 .side-panel{
-    position: fixed;
-  
+    position: relative;
     width: 20vw;
-    height: 100vh;
-    background: dodgerblue;
+    height: 100%;
+    background:var(--bg-color);
     display: flex;
     flex-direction: column;
-   
-    gap: 4rem;
+    
+    gap: 3rem;
 }
 .side-btn-room{
     border: none;
     width: 100%;
     height: 4rem;
-    background-color: dodgerblue;
+    background:var(--bg-color);
     color: white;
     font-size: 2rem;
 }
@@ -31,14 +30,21 @@
 }
 
 .side-panel-header{
+   
     position: relative;
     border-bottom: 1px solid white;
     padding: 1rem;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     height: 10rem;
     align-items: center;
-    gap:4em;
+    text-align:left; 
+    gap:1em;
+}
+.side-panel-header img{
+   
+    border-radius: 50%;
+    width: 5rem;
 }
 .visited{
     background-color: rgb(247, 247, 247);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import '../StyleSheets/sidepanel.css';
 import {Link} from 'react-router-dom';
 import Logo from '../Resources/icons8-lotus-64-white.png'
-export default function SidePanel(){
+export default function SidePanel({id,firstName,lastName, position,profile} ){
     const [isVisited,setisVisited]=useState(false);
     const handleClickEvents=(event)=>{
         const classname=event.target.className;
@@ -13,17 +13,18 @@ export default function SidePanel(){
         <div className="side-panel-body">
             <section className="side-panel">
                 <div className="side-panel-header">
-                    <img src={Logo}/>
+                    <Link to='/Manager'><img src="" alt="profile-image"/></Link>
                     <div>
-                    <h2>User Name</h2>
-                    <h3>user position</h3>
+                    <h3>{firstName+' '+lastName}</h3>
+                    <h4>{position}</h4>
                     </div>
                 </div>
-               
-                <Link to="/Rooms"> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
-                <Link to="/Staff"> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
-                <Link to="/Booking"> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
-                <Link to="/Account"> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
+
+                <Link to={`/Manager/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
+                <Link to={`/Rooms/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
+                <Link to={`/Staff/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
+                <Link to={`/Booking/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
+                <Link to={`/Settings/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
                 <div> <img src={Logo}/></div>
             </section>
             

@@ -1,3 +1,6 @@
+:root{
+    --bg-color:#0271ff;
+}
 .Body{
     background-color:#0271ff;
     height: 100vh;
@@ -8,14 +11,15 @@
     padding: 2rem;
     gap: 1rem;
 }
-.logo{
+.home-logo{
     position: relative;
    
-    padding-top: -5rem;
-    width: 20rem;
-    height: 20rem;
+    
+    width: 15rem;
+    height: auto;
 }
-.logo img{
+.home-logo img{
+    
     position: relative;
     width: 100%;
 }
@@ -26,11 +30,18 @@
     color: white;
     text-decoration: none;
 }
-
+.container{
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
 .form-container{
    
     width: 50vw;
-    padding-top: 5rem;
+   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,6 +51,9 @@
   
     
     width: 25rem;
+    
+
+    
 }
 .form-container Form Button{
     margin-top: 1rem;
