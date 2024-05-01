@@ -1,5 +1,6 @@
 package CodeLK.me.SandaAsapuwaHMS.Rooms;
 
+import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,26 +24,35 @@ public class RoomController {
     public ResponseEntity<List<RoomDTO>> getAllRooms(){
         return new ResponseEntity<List<RoomDTO>>(service.getAllRooms(), HttpStatus.OK);
     }
-
-
-    @PostMapping("/add-Room")
+    @GetMapping("/get-room/{roomid}")
+    public ResponseEntity<RoomDTO> getRoom(@PathVariable String roomid){
+        return new ResponseEntity<RoomDTO>(service.getRoom(roomid), HttpStatus.OK);
+    }
+     @PostMapping("/add-room")
     public ResponseEntity<Rooms> addRooms(
             @RequestParam("image") String image,
             @RequestParam("availability") String availability) throws IOException {
         return new ResponseEntity<Rooms>(service.addRooms(availability,image), HttpStatus.CREATED);
     }
-//    @PutMapping("/update-Room.{id}")
-//    public ResponseEntity<Rooms> updateRooms(
-//            @PathVariable String roomId,
-//            @RequestParam("image") MultipartFile image,
-//            @RequestParam("availability") String availability) throws IOException {
-//        return new ResponseEntity<Rooms>(service.updateRoom(roomId,availability,image), HttpStatus.ACCEPTED);
-//    }
-//
-//    @DeleteMapping("/Delete/{id}")
-//    public String delRoom(@PathVariable String id){
-//        return (service.deleteRoom(id));
-//    }
+
+    @PutMapping("/update-room/{roomId}")
+    public ResponseEntity<Rooms> updateRoom(
+            @PathVariable String roomId,
+            @RequestParam("image") String image,
+            @RequestParam("availability") String availability) throws IOException {
+        return new ResponseEntity<Rooms>(service.updateRoom(roomId,availability,image), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/remove-room/{roomId}")
+    public String deleteRoom(
+            @PathVariable String roomId
+            ) {
+        return (service.deleteRoom(roomId));
+    }
+
+
+
+
 
 
 

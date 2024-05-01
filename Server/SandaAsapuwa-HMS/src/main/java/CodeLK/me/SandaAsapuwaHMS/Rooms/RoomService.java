@@ -30,30 +30,44 @@ public class RoomService {
         return roomDTOS;
     }
 
-    public Rooms addRooms(String availability,String file) throws IOException {
+    public RoomDTO getRoom(String roomid) {
+        Optional<Rooms> room=repository.findByroomId(roomid);
+        Rooms actualRoom=room.orElseThrow(()->{
+            throw new NullPointerException("No Room exist");
+        });
+        String file = actualRoom.getImages();
+        RoomDTO roomDTO = new RoomDTO(actualRoom.getRoomId(), actualRoom.getAvailability(), actualRoom.getImages());
 
+        return roomDTO;
+    }
+
+    public Rooms addRooms(String availability,String file) {
         Rooms rooms = new Rooms(availability, file);
-
         repository.insert(rooms);
         return rooms;
     }
 
-//    public Rooms updateRoom(String roomId,String availability,String file) throws IOException {
-//
-//        Rooms rooms = repository.findByroomId(roomId);
-//        rooms.setAvailability(availability);
-//        rooms.setImages(file);
-//
-//        repository.save(rooms);
-//        return rooms;
-//    }
-//
-//    public String deleteRoom(String id){
-//        Rooms rooms=repository.findByroomId(id);
-//        repository.delete(rooms);
-//        return "Room Removed";
-//
-//    }
+    public Rooms updateRoom(String roomId,String availability,String image){
+        Optional<Rooms> roomsOptional=repository.findByroomId(roomId);
+        Rooms room=roomsOptional.orElseThrow(()->{
+            throw new NullPointerException("No room exist");
+
+        });
+        room.setAvailability(availability);
+        room.setImages(image);
+        repository.save(room);
+        return room;
+    }
+
+    public String deleteRoom(String roomId) {
+        Optional<Rooms> roomsOptional=repository.findByroomId(roomId);
+        Rooms room=roomsOptional.orElseThrow(()->{
+            throw new NullPointerException("No room exist");
+
+        });
+        repository.delete(room);
+        return "Room "+roomId+" successfully removed";
+    }
 
 
 

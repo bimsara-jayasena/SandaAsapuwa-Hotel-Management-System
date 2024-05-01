@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends MongoRepository<Rooms, ObjectId> {
    // Optional<Rooms> findByRoomId(String roomId);
-     Rooms findByroomId(String roomId);
+     Optional<Rooms> findByroomId(String roomId);
 
 
 }

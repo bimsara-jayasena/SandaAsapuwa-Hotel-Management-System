@@ -7,29 +7,23 @@ import java.util.UUID;
 
 public class RoomDTO {
 
+    @Id
+    private ObjectId id;
      private String roomId;
 
     private  String availability;
 
     private  String images;
     public RoomDTO(String roomId,String availability,String image){
-        this.roomId = this.generateRoomId();
+        this.roomId = roomId;
 
         this.availability=availability;
         this.images=image;
 
     }
-    private String generateRoomId(){
-        return UUID.randomUUID().toString();
-    }
 
-    public String getId() {
-        return roomId;
-    }
 
-    public void setId(String id) {
-        this.roomId = id;
-    }
+
 
     public String getRoomId() {
         return roomId;

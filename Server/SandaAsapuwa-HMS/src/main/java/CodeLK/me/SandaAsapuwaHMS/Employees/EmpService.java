@@ -52,8 +52,10 @@ public class EmpService {
 
     }
     public EmployesDTO getEmployebyEmpId(String empId) {
-        Employes employe= repository.findByEmpId(empId);
-        if(employe==null){throw new RuntimeException("No resources found");}
+        Optional<Employes> optionalEmployes= repository.findByEmpId(empId);
+        Employes employe=optionalEmployes.orElseThrow(()->{
+            throw new NullPointerException("No Resources found");
+        });
         //String file= Base64.getEncoder().encodeToString(employe.getProfileImg());
         EmployesDTO employeDTO=new EmployesDTO(
                 employe.getProfileImg(),
@@ -93,29 +95,34 @@ public class EmpService {
             String address,
             String contactNo,
             String position,
-            String password)throws IOException{
+            String password){
 
-        Employes employes=repository.findByEmpId(id);
-        if(employes==null){throw new RuntimeException("No resources found");}
+        Optional<Employes> optionalEmployes= repository.findByEmpId(id);
+        Employes employe=optionalEmployes.orElseThrow(()->{
+            throw new NullPointerException("No Resources found");
+        });
 
-        employes.setProfileImg(img);
-        employes.setFirstName(firstName);
-        employes.setLastName(lastName);
-        employes.seteMail(eMail);
-        employes.setAddress(address);
-        employes.setContactNo(contactNo);
-        employes.setPosition(position);
-        employes.setPassword(password);
+        employe.setProfileImg(img);
+        employe.setFirstName(firstName);
+        employe.setLastName(lastName);
+        employe.seteMail(eMail);
+        employe.setAddress(address);
+        employe.setContactNo(contactNo);
+        employe.setPosition(position);
+        employe.setPassword(password);
 
-        repository.save(employes);
-        return employes;
+        repository.save(employe);
+        return employe;
 
 
     }
 
         //Delete
         public String removeEmploye(String empId){
-            Employes employe=repository.findByEmpId(empId);
+            Optional<Employes> optionalEmployes= repository.findByEmpId(empId);
+            Employes employe=optionalEmployes.orElseThrow(()->{
+                throw new NullPointerException("No Resources found");
+            });
             repository.delete(employe);
             return "employee "+employe.getFirstName()+" "+employe.getLastName()+" Removed successfully";
         }

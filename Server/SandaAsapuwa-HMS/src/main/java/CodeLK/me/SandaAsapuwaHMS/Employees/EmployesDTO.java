@@ -10,12 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.UUID;
 
 public class EmployesDTO {
-
-
-
-
-
-
         @Id
         private ObjectId id;
         private String empId;
