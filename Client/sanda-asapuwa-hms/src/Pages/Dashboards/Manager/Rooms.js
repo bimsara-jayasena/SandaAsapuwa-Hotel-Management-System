@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import '../../../StyleSheets/manager.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SidePanel from '../../../Components/SidePanel';
-import UPDATE from '../../../Components/Update';
-import ADD from '../../../Components/Add';
-import DELETE from '../../../Components/Delete';
+import UPDATE from '../../../Components/UpdateRoom';
+import ADD from '../../../Components/AddRoom';
+import DELETE from '../../../Components/DeleteRoom';
 import ScrollPane from "../../../Components/Scrollpane";
 import Logo from '../../..//Resources/icons8-lotus-64-white.png';
 import axios from 'axios';
@@ -11,11 +13,13 @@ import  Button  from "react-bootstrap/Button";
 import { useParams } from "react-router-dom";
 import {ClipLoader} from  'react-spinners';
 import { MDBContainer } from "mdb-react-ui-kit";
+;
 export default function Rooms(){
-    let roomCount=0;
-    let availableRoomCount=0;
-    let booked=0;
+   
     const [rooms,setRooms]=useState([]);
+    const [roomCount,setRoomCount]=useState(0);
+    const [availableRoomCount,setAvailableRoomCount]=useState(0);
+    const [booked,setBooked]=useState(0);
     const[isclicked,setisClicked]=useState(false);
     const[crudAction,setCrudAction]=useState("");
     const[roomId,setRoomId]=useState("");
@@ -64,22 +68,29 @@ export default function Rooms(){
         axios.get("http://localhost:8080/Rooms")
         .then((res)=>{
             setRooms(res.data);
-            res.data.map((rooms)=>{
-                roomCount++;
-                if((rooms.availability)==="available"){
-                    availableRoomCount++
-                }
-                else{
-                    booked++;
-                }
-            })
             setLoading(false);
-            console.log(res.data)
         })
         .catch((err)=>console.log({message:err.message})
         );
-       
-    },[]);
+     },[rooms]);
+
+    useEffect(()=>{
+        let roomCount=0;
+        let availableRoomCount=0;
+        let booked=0;
+        rooms.map((room)=>{
+            roomCount++;
+            if(room.availability==="available"){
+                availableRoomCount++
+            }
+            else{
+                booked++
+            }
+        })
+        setRoomCount(roomCount);
+        setAvailableRoomCount(availableRoomCount)
+        setBooked(booked);
+    },[rooms]);
     return(
         
        <div>
@@ -173,7 +184,7 @@ export default function Rooms(){
                            
                         </ScrollPane>
                         <Button className="btnAdd " value="ADD" onClick={(e)=>{addRoom(e)}}>Add new Room</Button>
-                            
+                       
                     </div>
                    
 
@@ -188,7 +199,7 @@ export default function Rooms(){
                            (()=>{
                             if(crudAction==="ADD"){return(<ADD/>)}
                             else if(crudAction==="UPDATE"){return(<UPDATE roomId={roomId}/>)}
-                            else if(crudAction==="DELETE"){return(<DELETE roomId={roomId}/>)}
+                            else if(crudAction==="DELETE"){return(<DELETE roomId={roomId} mngId={id}/>)}
                             
                         
                         })()
@@ -199,7 +210,7 @@ export default function Rooms(){
                </div>
 
         </div>
-        
+        <ToastContainer/>
        </div>
     )
 }

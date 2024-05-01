@@ -16,8 +16,10 @@ import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
 import UpdateEmploye from "../../../Components/UpdateEmploye";
 export default function Staff() {
+  
   const { id } = useParams();
   const [empId, setEmpId] = useState("");
+  const [empCount,setEmpCount]=useState(0);
   const [employes, setEmployes] = useState([]);
   const [employe, setEmploye] = useState();
   const [firstName, setFirstName] = useState("");
@@ -34,6 +36,7 @@ export default function Staff() {
     axios
       .get(`http://localhost:8080/Employes/empid/${id}`)
       .then((res) => {
+
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
         setPosition(res.data.position);
@@ -47,9 +50,19 @@ export default function Staff() {
       .get(`http://localhost:8080/Employes`)
       .then((res) => {
         setEmployes(res.data);
+        
+
       })
       .catch((err) => console.log(err.response));
   }, [employes]);
+
+  useEffect(()=>{
+    let empCount=0;
+      employes.map((emp)=>{
+        empCount++;
+      })
+      setEmpCount(empCount);
+  },[employes])
 
   const click = (iD) => {
       setShowEmp(true);
@@ -74,7 +87,7 @@ export default function Staff() {
     axios
       .delete(`http://localhost:8080/Employes/delete-employe/${empId}`)
       .then((res) => {
-        alert("Employe removed");
+        toast.success("employe removed");
         setShowEmp(false);
       })
       .catch((err) => console.log(err.response));
@@ -113,7 +126,7 @@ export default function Staff() {
                 <img src={Logo} />
                 <h2>Total Employees</h2>
               </div>
-              <div>2</div>
+              <div>{empCount}</div>
             </div>
 
             <button className="cards" onClick={() => setShowAb(true)}>
@@ -186,6 +199,7 @@ export default function Staff() {
                             >
                               UPDATE
                             </Button>
+                           
                           </td>
                         </tr>
                       );
@@ -201,6 +215,7 @@ export default function Staff() {
             >
               Add Employee
             </Button>
+           
           </div>
         </section>
         <div
@@ -300,6 +315,7 @@ export default function Staff() {
                 <Button variant="danger" onClick={btnDelClicked}>
                   Remove Employe
                 </Button>
+               
               </div>
             </div>
           </div>
@@ -341,9 +357,7 @@ export default function Staff() {
           </div>
         </div>
       </section>
-      <ToastContainer 
-        
-      />
+      <ToastContainer/>
     </div>
   );
 }

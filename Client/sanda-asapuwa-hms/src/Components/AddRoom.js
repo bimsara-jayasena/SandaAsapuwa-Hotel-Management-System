@@ -1,15 +1,17 @@
 import React from "react";
 import { useState } from "react";
 import './CRUD.css';
+import {toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {Form,InputGroup} from 'react-bootstrap';
 import  Button  from "react-bootstrap/Button";
 import Logo from '../Resources/icons8-lotus-64-white.png';
 import axios from "axios";
-export default function MngSide(){
+export default function AddRoom(){
     const [validated,setValidated]=useState(false);
     const [clicked,setClicked]=useState(false);
     const [availability,setAvailability]=useState("");
-    const [images,setImages]=useState([]);
+    const [images,setImages]=useState("");
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -18,15 +20,15 @@ export default function MngSide(){
         }
         else{
           const formData=new FormData();
-          formData.append('availability',availability);
           formData.append('image',images);
+          formData.append('availability',availability);
 
-          axios.post("http://localhost:8080/Rooms/add-Room",formData,{
+          axios.post("http://localhost:8080/Rooms/add-room",formData,{
             headers:{
               'Content-Type':'multipart/form-data'
             }
           })
-          .then(()=>{console.log({message:'room added'})})
+          .then(()=>{toast.success("new room added!")})
           .catch((err)=>{console.log({message:err.message})});
         
         }
@@ -34,7 +36,7 @@ export default function MngSide(){
         setValidated(true);
       };
       const addImage=(event)=>{
-        setImages(event.target.files[0]);
+        setImages(event.target.value);
       }
       const addAvailability=(event)=>{
         setAvailability(event.target.value);
@@ -62,7 +64,7 @@ export default function MngSide(){
 
                     <Form.Group>
                         <Form.Label controlId="images" htmlFor="images"/>
-                        <Form.Control type="file" id="images" placeholder="Images" onChange={(e)=>{addImage(e)}}required/>
+                        <Form.Control type="text" id="images" placeholder="Images" onChange={(e)=>{addImage(e)}}required/>
                         <Form.Control.Feedback type="invalid" className="bold">Add Images</Form.Control.Feedback>
                     </Form.Group>
 
