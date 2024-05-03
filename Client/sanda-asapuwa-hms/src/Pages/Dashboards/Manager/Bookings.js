@@ -102,13 +102,13 @@ export default function Bookings() {
                   <thead>
                     <tr>
                       <th>Reservation Id</th>
-                      <th>Room</th>
+                      {/* <th>Room</th> */}
                       <th>Guest Name</th>
                       <th>Total Guest</th>
                       <th>Arrival Date</th>
-                      <th>Departure Date</th>
+                     {/*  <th>Departure Date</th>
                       <th>Days staying</th>
-                      <th>Payed amount</th>
+                      <th>Payed amount</th> */}
                     </tr>
                   </thead>
                   <tbody>
