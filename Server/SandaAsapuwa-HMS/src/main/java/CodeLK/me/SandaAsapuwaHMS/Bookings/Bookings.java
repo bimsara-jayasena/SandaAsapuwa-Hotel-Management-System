@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Document(collection = "bookings")
 @NoArgsConstructor
@@ -19,18 +20,21 @@ public class Bookings {
     private String firstName;
     private String lastName;
     private String eMail;
-    private String address;
+
+    private String pickUp;
     private String contactNo;
     private Integer guestCount;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME ,pattern =  "yyyy-MM-dd")
     private Date arrivalDate;
     private String arrivalTime;
 
-    public Bookings(String firstName, String lastName, String eMail, String address, String contactNo, Integer guestCount, Date arrivalDate, String arrivalTime) {
+    public Bookings(String firstName, String lastName, String eMail,String pickUp, String contactNo, Integer guestCount, Date arrivalDate, String arrivalTime) {
+        this.bookingId=setBookingId();
         this.firstName = firstName;
         this.lastName = lastName;
         this.eMail = eMail;
-        this.address = address;
+        this.pickUp=pickUp;
         this.contactNo = contactNo;
         this.guestCount = guestCount;
         this.arrivalDate = arrivalDate;
@@ -41,8 +45,16 @@ public class Bookings {
         return bookingId;
     }
 
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
+    public String getPickUp() {
+        return pickUp;
+    }
+
+    public void setPickUp(String pickUp) {
+        this.pickUp = pickUp;
+    }
+
+    public String setBookingId() {
+        return UUID.randomUUID().toString();
     }
 
     public String getFirstName() {
@@ -69,13 +81,7 @@ public class Bookings {
         this.eMail = eMail;
     }
 
-    public String getAddress() {
-        return address;
-    }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getContactNo() {
         return contactNo;
