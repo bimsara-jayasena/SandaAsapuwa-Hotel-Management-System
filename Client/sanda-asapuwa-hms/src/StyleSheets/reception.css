@@ -1,0 +1,135 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.loading-screen{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+   
+    filter: blur(5px);
+    z-index: 1;
+}
+.loading-spinner{
+    position: absolute;
+    z-index: 2;
+}
+.body-r{
+     display: flex;
+     justify-content: center;
+     height: auto;
+    
+ 
+ }
+ .body-panel-r{
+    position: relative;
+     border: 1px solid red;
+     
+     width: 80vw;
+     height:100vh;
+     display: flex;
+     flex-direction: column;
+    
+     
+     gap: 1rem;
+     
+ }
+ .card-container{
+    position: relative;
+    /*  position: relative; */
+     margin-top: 1rem;
+     display: flex;
+     flex-wrap: wrap;
+     gap: 1rem;
+     justify-content: flex-start;
+     width: 100%;
+     padding-left: 1.5rem;
+ }
+ .cards{
+     padding:1rem;
+     margin-right: 0rem;
+    
+     border-radius: 5px;
+     background-color:#378af8;
+     display: flex;
+     width: 25rem;
+     gap: 1rem;
+ }
+ .cards div:first-child{
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 1rem;
+    flex-direction: column;
+    width: 18rem;
+    gap: 1rem;
+    color: white;
+ }
+ .cards div:nth-child(2){
+   
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
+     flex-wrap: wrap;
+     color: white;
+     font-size: 5em;
+  }
+ .card-container img{
+     width: 64px;
+ }
+ .scrollpane-container-r{
+   
+    position: relative;
+    width: 100%;
+    height:auto;
+    
+    
+    
+}
+
+.loading-screen-container-scrollpane{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:40rem;
+}
+.loading-screen-scollpane{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    height:40rem;
+    z-index: 1;
+    filter: blur(5px);
+    z-index: 1;
+}
+.display-none{
+    transform: scale(0);
+}
+.display-block{
+    transform: scale(1);
+    transition: 0.2s;
+}
+.crud{
+    position: relative;
+   
+   
+   height: auto;
+   border: 1px solid red;
+   
+}
+.crud-container{
+    position: relative;
+    width: 75vw;
+    height:auto;
+    margin: 1rem;
+    background-color: dodgerblue;
+   
+   
+
+}

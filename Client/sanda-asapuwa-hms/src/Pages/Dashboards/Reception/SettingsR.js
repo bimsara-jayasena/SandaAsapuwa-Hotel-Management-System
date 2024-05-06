@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Scrollpane from "../../../Components/Scrollpane";
 import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
-export default function Bookings() {
+export default function SettingsR() {
   const { id } = useParams();
 
   const [firstName, setFirstName] = useState("");
@@ -46,39 +46,12 @@ export default function Bookings() {
           />
         </section>
         <section className="body-panel">
-         Reservations information
-          <div className="card-container align-items-center">
-            <div className="cards">
-              <div>
-                <img src={Logo} />
-                <h2>Total Reservations</h2>
-              </div>
-              <div>2</div>
-            </div>
-
-            <div className="cards">
-              <div>
-                <img src={Logo} />
-                <h2>Today Reservations</h2>
-              </div>
-              <div>2</div>
-            </div>
-
+         Account information
         
-          <div className="cards">
-              <div>
-                <img src={Logo} />
-                <h2>In House Guests</h2>
-              </div>
-              <div>0</div>
-            </div>
-          </div>
-          <div className="search-bar">
-            <input type="text" placeholder="Search here..." />
-          </div>
+         
 
           
-            <div className="scrollpane-container">
+            <div className="table-container">
             <div>
                {/* {loading ? (
                 <div className="loading-screen-container-scrollpane">
@@ -96,57 +69,47 @@ export default function Bookings() {
                 <></>
               )}  */}
             </div>
-            <Scrollpane>
+          
               <div className="table">
                 <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Reservation Id</th>
-                      {/* <th>Room</th> */}
-                      <th>Guest Name</th>
-                      <th>Total Guest</th>
-                      <th>Arrival Date</th>
-                     {/*  <th>Departure Date</th>
-                      <th>Days staying</th>
-                      <th>Payed amount</th> */}
-                    </tr>
-                  </thead>
+                 
                   <tbody>
                     <tr>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>Mark</td>
-                      <td>4</td>
-                      <td>01.05.24</td>
-                      <td>14.05.24</td>
-                      <td>5</td>
-                      <td>$500</td>
+                      <th>Employee Id</th>
+                        <th>1</th>
                     </tr>
                     <tr>
-                      <td>2</td>
-                      <td>1</td>
-                      <td>Jacob</td>
-                      <td>1</td>
-                      <td>02.05.24</td>
-                      <td>6.05.24</td>
-                      <td>4</td>
-                      <td>$30</td>
+                        <th>First Name</th>
+                        <th>mark</th>
                     </tr>
                     <tr>
-                      <td>3</td>
-                      <td>1</td>
-                      <td>Larry the Bird</td>
-                      <td>2</td>
-                      <td>03.05.24</td>
-                      <td>7.05.24</td>
-                      <td>4</td>
-                      <td>$50</td>
+                      <th>lastName</th>
+                        <th>ff</th>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <th>1</th>
+                    </tr>
+                    <tr>
+                      <th>E-Mail </th>
+                        <th>1</th>
+                    </tr>
+                    <tr>
+                        <th>Contact No</th>
+                        <th>1</th>
+                    </tr>
+                    <tr>
+                        <th>Password</th>
+                        <th>1</th>
                     </tr>
                   </tbody>
+                  
+
                 </Table>
               </div>
-            </Scrollpane>
+          
           </div> 
+
            
            
          

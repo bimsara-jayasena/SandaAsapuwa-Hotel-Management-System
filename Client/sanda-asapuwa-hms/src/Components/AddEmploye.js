@@ -43,6 +43,7 @@ export default function AddEmploye() {
         formData.append("contactNo",contactNo)
         formData.append("position",position)
         formData.append("password",Password)
+        formData.append("availability",availability)
 
         axios.post('http://localhost:8080/Employes/add-employe',formData,{
             headers:{
@@ -217,6 +218,19 @@ export default function AddEmploye() {
                   id="pw"
                   onChange={(e)=>{setPassword(e.target.value)}} 
                   placeholder="password"
+                  required
+                />
+                <Form.Control.Feedback type="invalid" className="bold">
+                  
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="pw" />
+                <Form.Control
+                  type="text"
+                  id="availability"
+                  onChange={(e)=>{setAvailability(e.target.value)}} 
+                  placeholder="Availability"
                   required
                 />
                 <Form.Control.Feedback type="invalid" className="bold">

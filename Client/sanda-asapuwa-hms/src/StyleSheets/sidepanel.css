@@ -8,7 +8,7 @@
 .side-panel{
     position: relative;
     width: 20vw;
-    height: 100%;
+    height: 100vh;
     background:var(--bg-color);
     display: flex;
     flex-direction: column;

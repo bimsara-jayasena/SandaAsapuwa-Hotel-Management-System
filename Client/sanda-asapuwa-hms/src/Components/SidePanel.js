@@ -20,11 +20,25 @@ export default function SidePanel({id,firstName,lastName, position,profile} ){
                     </div>
                 </div>
 
-                <Link to={`/Manager/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
+                {position==="Manager" ? 
+                 <>
+                 <Link to={`/Manager/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
                 <Link to={`/Rooms/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
                 <Link to={`/Staff/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
                 <Link to={`/Booking/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
                 <Link to={`/Settings/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
+                 </>
+                 :
+                 <>
+                 <Link to={`/Reception/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
+                <Link to={`/Rooms-r/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
+                <Link to={`/Staff-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
+                <Link to={`/Booking-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
+                <Link to={`/Settings-r/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
+                 </>
+            
+            
+    }
                 <div> <img src={Logo}/></div>
             </section>
             

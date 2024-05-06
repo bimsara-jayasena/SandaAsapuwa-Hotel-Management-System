@@ -14,7 +14,7 @@ export default function Home(){
     
     const[validated,setValidated]=useState(false);
     const[loaded,setLoaded]=useState(false);
-    const[user,setUser]=useState([]);
+    const[user,setUser]=useState("");
     const[empId,setEmpid]=useState("");
     const[empPw,setEmpPw]=useState("");
     const [validId,setValidId]=useState(true);

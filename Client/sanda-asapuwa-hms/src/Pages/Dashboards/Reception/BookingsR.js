@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Scrollpane from "../../../Components/Scrollpane";
 import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
-export default function Bookings() {
+export default function BookingsR() {
   const { id } = useParams();
 
   const [firstName, setFirstName] = useState("");
@@ -68,15 +68,16 @@ export default function Bookings() {
           <div className="cards">
               <div>
                 <img src={Logo} />
-                <h2>In House Guests</h2>
+                <h2>Income</h2>
               </div>
-              <div>0</div>
+              <div>$2000</div>
             </div>
           </div>
           <div className="search-bar">
-            <input type="text" placeholder="Search here..." />
+            <input type="text" placeholder="Sesssarch here..." />
           </div>
 
+            <h1>All Reservation</h1>
           
             <div className="scrollpane-container">
             <div>
