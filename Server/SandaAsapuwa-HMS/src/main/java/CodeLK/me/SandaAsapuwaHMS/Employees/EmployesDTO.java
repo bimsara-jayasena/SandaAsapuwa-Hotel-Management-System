@@ -24,6 +24,7 @@ public class EmployesDTO {
         private String position;
         private String password;
 
+        private String availability;
         public EmployesDTO( String profileImg,
                             String empId,
                             String firstName,
@@ -32,7 +33,8 @@ public class EmployesDTO {
                             String address,
                             String contactNo,
                             String position,
-                            String password){
+                            String password,
+                            String availability){
 
             this.profileImg=profileImg;
             this.empId=empId;
@@ -44,11 +46,20 @@ public class EmployesDTO {
             this.contactNo = contactNo;
             this.position = position;
             this.password=password;
+            this.availability=availability;
         }
 
         public String getProfileImg() {
             return profileImg;
         }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
 
     public String getEmpId() {
         return empId;

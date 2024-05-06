@@ -26,7 +26,8 @@ public class EmpService {
                     employe.getAddress(),
                     employe.getContactNo(),
                     employe.getPosition(),
-                    employe.getPassword()
+                    employe.getPassword(),
+                    employe.getAvailablity()
             );
             return employesDTO;
         }).toList();
@@ -46,7 +47,8 @@ public class EmpService {
                         employe.getAddress(),
                         employe.getContactNo(),
                         employe.getPosition(),
-                        employe.getPassword()
+                        employe.getPassword(),
+                        employe.getAvailablity()
                 );
                 return employeDTO;
 
@@ -66,7 +68,8 @@ public class EmpService {
                 employe.getAddress(),
                 employe.getContactNo(),
                 employe.getPosition(),
-                employe.getPassword()
+                employe.getPassword(),
+                employe.getAvailablity()
         );
         return employeDTO;
 
@@ -80,9 +83,10 @@ public class EmpService {
             String address,
             String contactNo,
             String position,
-            String password) throws IOException
+            String password,
+            String availability) throws IOException
     {
-        Employes employes=new Employes(img,firstName, lastName, eMail, address, contactNo, position,password);
+        Employes employes=new Employes(img,firstName, lastName, eMail, address, contactNo, position,password,availability);
         repository.insert(employes);
         return employes;
     }
@@ -95,7 +99,8 @@ public class EmpService {
             String address,
             String contactNo,
             String position,
-            String password){
+            String password,
+            String availability){
 
         Optional<Employes> optionalEmployes= repository.findByEmpId(id);
         Employes employe=optionalEmployes.orElseThrow(()->{
@@ -110,7 +115,7 @@ public class EmpService {
         employe.setContactNo(contactNo);
         employe.setPosition(position);
         employe.setPassword(password);
-
+        employe.setAvailablity(availability);
         repository.save(employe);
         return employe;
 

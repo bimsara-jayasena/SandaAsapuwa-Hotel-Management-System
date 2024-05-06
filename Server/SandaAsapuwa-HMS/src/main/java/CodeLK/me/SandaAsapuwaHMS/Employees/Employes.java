@@ -30,6 +30,8 @@ public class Employes {
 
     private String password;
 
+    private String availablity;
+
     public Employes(
            String profileImg,
             String firstName,
@@ -38,7 +40,9 @@ public class Employes {
             String address,
             String contactNo,
             String position,
-            String password){
+            String password,
+            String availablity
+           ){
         this.empId = this.generateEmpId();
         this.profileImg=profileImg;
         this.firstName = firstName;
@@ -49,6 +53,15 @@ public class Employes {
         this.contactNo = contactNo;
         this.position = position;
         this.password=password;
+        this.availablity=availablity;
+    }
+
+    public String getAvailablity() {
+        return availablity;
+    }
+
+    public void setAvailablity(String availablity) {
+        this.availablity = availablity;
     }
 
     public String getPassword() {

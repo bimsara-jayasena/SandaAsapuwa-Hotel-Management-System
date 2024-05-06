@@ -24,7 +24,7 @@ public class Bookings {
     private String pickUp;
     private String contactNo;
     private Integer guestCount;
-
+    private String status;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME ,pattern =  "yyyy-MM-dd")
     private Date arrivalDate;
     private String arrivalTime;
@@ -39,6 +39,15 @@ public class Bookings {
         this.guestCount = guestCount;
         this.arrivalDate = arrivalDate;
         this.arrivalTime = arrivalTime;
+        this.status="unconfirmed";
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getBookingId() {

@@ -59,10 +59,11 @@ public class EmpController {
             @RequestParam("address")String address,
             @RequestParam("contactNo")String contactNo,
             @RequestParam("position")String position,
-            @RequestParam("password")String password
+            @RequestParam("password")String password,
+            @RequestParam("availability") String availability
             ) throws IOException {
         return new ResponseEntity<Employes>(service.addEmployee(
-               profileImg,firstName,lastName,email,address,contactNo,position,password
+               profileImg,firstName,lastName,email,address,contactNo,position,password,availability
                 ), HttpStatus.CREATED);
     }
     @PutMapping("update-employe/{empId}")
@@ -75,7 +76,8 @@ public class EmpController {
             @RequestParam("address")String address,
             @RequestParam("contactNo")String contactNo,
             @RequestParam("position")String position,
-            @RequestParam("password")String password)throws IOException{
+            @RequestParam("password")String password,
+            @RequestParam("availability") String availability)throws IOException{
         return new ResponseEntity<Employes>(service.updateEmployee(
                 empId,
                 profileImg,
@@ -85,7 +87,8 @@ public class EmpController {
                 address,
                 contactNo,
                 position,
-                password
+                password,
+                availability
         ),HttpStatus.OK);
     }
 
