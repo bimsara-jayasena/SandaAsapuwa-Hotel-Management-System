@@ -39,7 +39,7 @@
    
 }
 .body-panel{
-   /*  position: relative; */
+    position: relative;
     border: 1px solid red;
     width: 80vw;
     height:auto;
@@ -262,4 +262,10 @@ Table tr{
 .test-container{
     border: 1px solid red;
     height: 10rem;
+}
+.chart-container{
+    position: relative;
+   
+    border: 1px solid red;
+    width: 50vw;
 }

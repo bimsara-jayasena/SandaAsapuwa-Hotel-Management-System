@@ -1,0 +1,58 @@
+ how about this approach, 
+
+import { useEffect } from "react";
+
+ 1.first we get the currunt date 
+const [currentDate, setCurrentDate] = useState(new Date());
+const [bookings,setBookings] = useState([]);
+
+  useEffect(() => {
+    // Function to calculate the milliseconds until midnight
+    const timeToMidnight = () => {
+      const now = new Date();
+      const midnight = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0,
+        0,
+        0
+      );
+      return midnight - now;
+    };
+
+    // Set timeout to update the date at midnight
+    const timeoutId = setTimeout(() => {
+      setCurrentDate(new Date()); // Update the date after timeout
+    }, timeToMidnight());
+
+    return () => clearTimeout(timeoutId); // Clear the timeout if the component unmounts
+  }, [currentDate]);
+	
+useEffect(()=>{
+	axios.get('{url for get data}')
+	.then((res)=>
+		setBooking(res.data))
+	.catch((err)=>console.log(err))
+
+},[currentDate])
+
+
+2.then we check are there any bookings in currunt date 
+const [todayBookings,setTodayBookings]=useState(0);
+const changeDateFormat = (date) => {
+    return format(parseISO(date), "yyyy/MM/dd");
+  };
+useEffect(()=>{
+    let totalBookings=0;
+    bookings.map((b)=>{
+        arrivalDate=changeDateFormat(bookings.arrivalDate)
+        if(currentDate===arrivalDate){
+        totalBookings++;
+ }
+    })
+ setTodayBookings(totalBookings);
+})
+ in here i get variable totalBooking and if there are any bookings,i increament totalBooking value by 1 and finally update the todayBookings
+
+  3.finally we add todayBooking to the collection in the database called "bookingCounts" along with the currunt date 

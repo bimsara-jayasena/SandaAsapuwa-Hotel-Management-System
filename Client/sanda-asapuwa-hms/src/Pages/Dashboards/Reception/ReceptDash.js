@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../../../StyleSheets/reception.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SidePanel from "../../../Components/SidePanel";
 import Logo from "../../..//Resources/icons8-lotus-64-white.png";
 import Button from "react-bootstrap/Button";
-import { useParams, useSearchParams } from "react-router-dom";
+import { json, useParams, useSearchParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import { format, parseISO } from "date-fns";
 import ScrollPane from "../../../Components/Scrollpane";
+import { elements } from "chart.js";
 
 export default function ReceptDash() {
   let roomCount = 0;
@@ -27,12 +28,17 @@ export default function ReceptDash() {
   const [arrivals, setArrivals] = useState("Today");
   const [todayArrivals, setTodayArrivals] = useState([]);
   const [guest, setGuest] = useState([]);
-
+  const [todayCount, setTodayCount] = useState(0);
   const [showGuest, setShowGuest] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date()); // Initialize state with the current date
+  const [counter, setCounter] = useState([]);
+  const [available, setAvailable] = useState(false);
+  const bookingRef = useRef(booking);
+  const countRef = useRef(counter);
+  const [counterId, setCounterId] = useState("");
 
+  /* get currunt Date */
   useEffect(() => {
-    // Function to calculate the milliseconds until midnight
     const timeToMidnight = () => {
       const now = new Date();
       const midnight = new Date(
@@ -43,15 +49,14 @@ export default function ReceptDash() {
         0,
         0
       );
-      return midnight - now;
+      return midnight.getTime() - now.getTime();
     };
 
-    // Set timeout to update the date at midnight
     const timeoutId = setTimeout(() => {
-      setCurrentDate(new Date()); // Update the date after timeout
+      setCurrentDate(new Date()); // Updates the currentDate at midnight
     }, timeToMidnight());
 
-    return () => clearTimeout(timeoutId); // Clear the timeout if the component unmounts
+    return () => clearTimeout(timeoutId);
   }, [currentDate]);
 
   useEffect(() => {
@@ -66,28 +71,39 @@ export default function ReceptDash() {
       })
       .catch((err) => console.log(err.response));
   });
-
+/* Get All Bookings */
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/Bookings`)
-      .then((res) => {
-        setBooking(res.data);
-        const today = res.data.filter(
-          (element) => element.arrivalDate === currentDate
-        );
-        setTodayArrivals(today);
-      })
-      .catch((err) => console.log(err.response));
-  }, [currentDate, guest]);
-  /*  useEffect(() => {
-    booking.map((book) => {
-      if (book.arrivalDate === currentDate) {
-        setTodayArrivals(book);
-      }
-      const today=res.
-    });
-  }, [currentDate]); */
+    bookingRef.current = booking;
+  }, [booking]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios
+        .get("http://localhost:8080/Bookings")
+        .then((res) => {
+          if (JSON.stringify(bookingRef.current) !== JSON.stringify(res.data)) {
+            toast.success("New Booking !");
+            setBooking(res.data);
+          }
+        })
 
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  /* Get today arrivals */
+  useEffect(() => {
+    const today = booking.filter(
+      (element) =>
+        format(parseISO(element.arrivalDate), "yyyy/MM/dd") ===
+        format(currentDate, "yyyy/MM/dd")
+    );
+    setTodayArrivals(today);
+  }, [booking]);
+
+  /* Get confirmed bookings */
   useEffect(() => {
     let count = 0;
     axios
@@ -101,9 +117,59 @@ export default function ReceptDash() {
       .catch((err) => console.log(err.response));
   }, [booking, guest]);
 
+  /* get today Countes */
+  useEffect(() => {
+    countRef.current = counter;
+  }, [counter]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/Counts")
+      .then((res) => {
+        const result = res.data.filter(
+          (element) =>
+            format(parseISO(element.date), "yyyy/MM/dd") ==
+            format(currentDate, "yyyy/MM/dd")
+        );
+        setCounter(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  /* Add or Update Counter db */
+  useEffect(() => {
+  
+    if (counter.length == 0 && todayArrivals.length != 0) {
+      const formData = new FormData();
+      formData.append("date", format(currentDate, "yyyy-MM/dd"));
+      formData.append("count", todayArrivals.length);
+
+      axios
+        .post("http://localhost:8080/Counts/Add-count", formData)
+        .then(console.log("new data added"))
+        .catch((err) => console.log(err));
+    } else {
+      counter.forEach((element) => {
+        if (todayArrivals.length != 0) {
+          const formData = new FormData();
+
+          formData.append("count", todayArrivals.length);
+
+          axios
+            .patch(`http://localhost:8080/Counts/update-count/${element.counterID}`, formData)
+            .then(console.log("updated"))
+            .catch((err) => console.log(err));
+        }
+      });
+    }
+  }, [counter, todayArrivals]);
+
+  /* Change date format */
   const changeDateFormat = (date) => {
     return format(parseISO(date), "yyyy/MM/dd");
   };
+
   const handleArrivals = () => {
     if (arrivals === "Today") {
       setArrivals("All");
@@ -116,6 +182,7 @@ export default function ReceptDash() {
     setShowGuest(!showGuest);
   };
   const handleConfirm = (event) => {
+    /* Update status */
     const id = event.target.id;
     const formData = new FormData();
     formData.append("Status", "confirmed");
@@ -135,8 +202,9 @@ export default function ReceptDash() {
         event.target.disabled = true;
       })
       .catch((err) => console.log(err));
-    console.log(id);
+    /* send data to counter collection */
   };
+
   return (
     <div>
       {loading ? (
@@ -289,44 +357,42 @@ export default function ReceptDash() {
                         })}
                       </div>
                     );
+                  } else if (todayArrivals.length === 0) {
+                    return (
+                      <div>
+                        <h1>No Reservations for today</h1>
+                      </div>
+                    );
                   } else {
-                    if (todayArrivals.length === 0) {
-                      return (
-                        <div>
-                          <h1>No Reservations for today</h1>
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div>
-                          {todayArrivals.map((booking) => {
-                            return (
-                              <div>
-                                <div className="crud-container">
-                                  <div className="crud-img">
-                                    <img src="" alt={booking.images} />
-                                  </div>
-                                  <div className="crud-info">
-                                    booking Id:{booking.bookingId}
-                                    guest Name: {booking.firstName}{" "}
-                                    {booking.lastName}
-                                    arrival Date:
-                                    {changeDateFormat(booking.arrivalDate)}
-                                    <Button
-                                      id={booking.roomId}
-                                      className="btn-update "
-                                      value="UPDATE"
-                                    >
-                                      Confirm
-                                    </Button>
-                                  </div>
+                    return (
+                      <div>
+                        {todayArrivals.map((booking) => {
+                          return (
+                            <div>
+                              <div className="crud-container">
+                                <div className="crud-img">
+                                  <img src="" alt={booking.images} />
+                                </div>
+                                <div className="crud-info">
+                                  booking Id:{booking.bookingId}
+                                  guest Name: {booking.firstName}{" "}
+                                  {booking.lastName}
+                                  arrival Date:
+                                  {changeDateFormat(booking.arrivalDate)}
+                                  <Button
+                                    id={booking.roomId}
+                                    className="btn-update "
+                                    value="UPDATE"
+                                  >
+                                    Confirm
+                                  </Button>
                                 </div>
                               </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    }
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
                   }
                 })()}
               </ScrollPane>
@@ -338,4 +404,4 @@ export default function ReceptDash() {
     </div>
   );
 }
-/* git gpg key2 */
+

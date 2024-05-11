@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../../StyleSheets/manager.css";
 import SidePanel from "../../../Components/SidePanel";
+import Chart from "../../../Components/Chart";
 import Logo from "../../..//Resources/icons8-lotus-64-white.png";
 import { useParams, useSearchParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
-
+import { ToastContainer, toast } from "react-toastify";
+import { elements } from "chart.js";
+import{format,parseISO} from 'date-fns';
 export default function ManagerDash() {
   let roomCount = 0;
   let availableRoomCount = 0;
@@ -22,7 +25,8 @@ export default function ManagerDash() {
   const [guest, setGuest] = useState([]);
   const [booking, setBooking] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-  
+  const bookingRef=useRef(booking);
+  const employeRef=useRef(availableEmployes);
   useEffect(() => {
     // Function to calculate the milliseconds until midnight
     const timeToMidnight = () => {
@@ -69,39 +73,65 @@ export default function ManagerDash() {
     .catch((err) => console.log(err.response));
   },[])
 
+  useEffect(()=>{
+    employeRef.current=availableEmployes;
+  },[availableEmployes])
   useEffect(() => {
-    axios
+    const interval=setInterval(()=>{
+      axios
       .get(`http://localhost:8080/Employes`)
       .then((res) => {  
-            const emp=res.data.filter(element=>element.availability==="available");
+        const emp=res.data.filter(element=>element.position==="available");
+           if(JSON.stringify(employeRef.current)!==JSON.stringify(emp)){
+          
+            toast.success("New employee added")
             setAvailableEmployes(emp);
+            
+           }
       })
       .catch((err) => console.log(err.response));
-  }, [employes]);
+    },1000);
+    return ()=>clearInterval(interval);
+  }, []);
+  useEffect(()=>{
+    console.log(availableEmployes)
+  },[availableEmployes])
 
+
+
+ /* Get all bookings */
+  useEffect(()=>{
+    bookingRef.current=booking;
+  },[booking])
   useEffect(() => {
+   const interval=setInterval(()=>{
     axios
-      .get(`http://localhost:8080/Bookings`)
-      .then((res) => {
+    .get(`http://localhost:8080/Bookings`)
+    .then((res) => {
+      if(JSON.stringify(bookingRef.current)!==JSON.stringify(res.data)){
+        toast.success("New Booking!");
         setBooking(res.data);
-        
-      })
-      .catch((err) => console.log(err.response));
-  }, [currentDate]);
+      
+      }
+      
+    })
+    .catch((err) => console.log(err.response));
+   },1000);
+   return ()=>clearInterval(interval);
+  }, []);
+  
   
   useEffect(() => {
     axios
       .get(`http://localhost:8080/Bookings`)
       .then((res) => {
-        const confirmedGuest = res.data.filter(
-          element => element.status === "confirmed"
-        );
-        setGuest(confirmedGuest);
+       const result=res.data.filter(element => element.status=="Confirmed");
+       setGuest(result);
       })
       .catch((err) => console.log(err.response));
   }, [booking]);
  
-
+ 
   return (
     <div>
       {loading ? (
@@ -170,9 +200,18 @@ export default function ManagerDash() {
               </div>
             </div>
           </section>
-          this is boddy
+         
+          <section className="body">
+            <div className="chart-container">
+              Booking analysis
+            <Chart/>
+            </div>
+          </section>
+         
         </section>
+        
       </div>
+      <ToastContainer/>
     </div>
   );
 }
