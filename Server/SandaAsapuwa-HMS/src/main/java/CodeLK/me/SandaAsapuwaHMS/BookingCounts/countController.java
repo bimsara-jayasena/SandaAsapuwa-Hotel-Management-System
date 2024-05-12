@@ -27,4 +27,16 @@ public class countController {
     ){
         return new ResponseEntity<BookingCounts>(countService.addBookingCounts(date,count),HttpStatus.CREATED);
     }
+    @PatchMapping("/update-count/{counterId}")
+    public ResponseEntity<BookingCounts> updateCount(
+            @PathVariable String counterId,
+            @RequestParam(value = "date",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date date,
+            @RequestParam(value = "count",required = false) Integer count
+    ){
+        return new ResponseEntity<BookingCounts>(countService.updateBookingCounts(counterId,date,count),HttpStatus.CREATED);
+    }
+    @DeleteMapping("/delete/{date}")
+    public String del(@PathVariable Integer count){
+        return (countService.del(count));
+    }
 }

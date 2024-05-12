@@ -1,11 +1,8 @@
 package CodeLK.me.SandaAsapuwaHMS.Bookings;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +10,14 @@ import java.util.Optional;
 @Service
 public class BookingService {
     @Autowired
-    private BookingRepository repository;
+    private BookingRepository bookingRepository;
 
-    public List<Bookings> getAllBookings(){return repository.findAll();}
+    public List<Bookings> getAllBookings(){
+        return bookingRepository.findAll();
+    }
 
     public Bookings getBooking(String id){
-        Optional<Bookings> bookingsOptional=repository.findByBookingId(id);
+        Optional<Bookings> bookingsOptional=bookingRepository.findByBookingId(id);
         Bookings bookings=bookingsOptional.orElseThrow(()->{throw new NullPointerException("no resources found!");});
         return  bookings;
     }
@@ -33,7 +32,7 @@ public class BookingService {
             String arrivalTime
     ){
         Bookings bookings=new Bookings(firstName,lastName,eMail,pickUp,contactNo,guestCount,arrivalDate,arrivalTime);
-        repository.insert(bookings);
+        bookingRepository.insert(bookings);
         return bookings;
     }
     public Bookings updateBooking(
@@ -48,7 +47,7 @@ public class BookingService {
             String arrivalTime,
             String Status
     ){
-       Optional<Bookings> bookingsOptional=repository.findByBookingId(bookingId);
+       Optional<Bookings> bookingsOptional=bookingRepository.findByBookingId(bookingId);
        Bookings bookings=bookingsOptional.orElseThrow(()->{throw new NullPointerException("No booking found");});
        if(firstName!=null){bookings.setFirstName(firstName);}
        if(lastName!=null){bookings.setLastName(lastName);}
@@ -59,7 +58,7 @@ public class BookingService {
        if(arrivalDate!=null){bookings.setArrivalDate(arrivalDate);}
        if(arrivalTime!=null){ bookings.setArrivalTime(arrivalTime);}
        if(Status!=null){ bookings.setStatus(Status);}
-        repository.save(bookings);
+        bookingRepository.save(bookings);
         return bookings;
     }
 
