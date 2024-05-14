@@ -31,8 +31,10 @@ public class RoomController {
      @PostMapping("/add-room")
     public ResponseEntity<Rooms> addRooms(
             @RequestParam("image") String image,
-            @RequestParam("availability") String availability) throws IOException {
-        return new ResponseEntity<Rooms>(service.addRooms(availability,image), HttpStatus.CREATED);
+            @RequestParam("availability") String availability,
+            @RequestParam("Key") Integer keyNum,
+            @RequestParam("catagory") String catagory) throws IOException {
+        return new ResponseEntity<Rooms>(service.addRooms(availability,image,keyNum,catagory), HttpStatus.CREATED);
     }
 
     @PutMapping("/update-room/{roomId}")

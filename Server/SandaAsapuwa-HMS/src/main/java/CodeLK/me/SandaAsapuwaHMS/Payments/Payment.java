@@ -1,5 +1,6 @@
 package CodeLK.me.SandaAsapuwaHMS.Payments;
 
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,62 +10,39 @@ import java.util.Date;
 
 @Document(collection = "Payments")
 public class Payment {
-    @Id
-    private ObjectId id;
-    private String token;
-    private boolean verifiedBuyer;
+    private static String sourceId; // Square source ID
+    private static Integer amount; // Payment amount
 
-    @DateTimeFormat
-    private Date date;
 
-    private String firstName;
-    private String lastName;
+    private String paymentMethod;// Unique idempotency key
 
-    public Payment(String token, boolean verifiedBuyer, Date date, String firstName, String lastName) {
-        this.token = token;
-        this.verifiedBuyer = verifiedBuyer;
-        this.date = date;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Payment(String sourceId, Integer amount, String paymentMethod) {
+        this.sourceId = sourceId;
+        this.amount = amount;
+        this.paymentMethod=paymentMethod;
     }
 
-    public String getToken() {
-        return token;
+    public static String getSourceId() {
+        return sourceId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
-    public boolean isVerifiedBuyer() {
-        return verifiedBuyer;
+    public static Integer getAmount() {
+        return amount;
     }
 
-    public void setVerifiedBuyer(boolean verifiedBuyer) {
-        this.verifiedBuyer = verifiedBuyer;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
-    public Date getDate() {
-        return date;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

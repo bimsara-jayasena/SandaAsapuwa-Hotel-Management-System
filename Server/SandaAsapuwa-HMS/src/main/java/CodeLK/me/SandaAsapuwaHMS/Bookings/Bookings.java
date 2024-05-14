@@ -16,6 +16,9 @@ import java.util.UUID;
 public class Bookings {
     @Id
     private ObjectId id;
+
+
+    private Object[] rooms;
     private String bookingId;
     private String firstName;
     private String lastName;
@@ -29,8 +32,10 @@ public class Bookings {
     private Date arrivalDate;
     private String arrivalTime;
 
-    public Bookings(String firstName, String lastName, String eMail,String pickUp, String contactNo, Integer guestCount, Date arrivalDate, String arrivalTime) {
+    public Bookings(Object[] rooms,String firstName, String lastName, String eMail,String pickUp, String contactNo, Integer guestCount, Date arrivalDate, String arrivalTime) {
         this.bookingId=setBookingId();
+
+        this.rooms=rooms;
         this.firstName = firstName;
         this.lastName = lastName;
         this.eMail = eMail;
@@ -41,6 +46,16 @@ public class Bookings {
         this.arrivalTime = arrivalTime;
         this.status="unconfirmed";
     }
+
+    public Object[] getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Object[] rooms) {
+        this.rooms = rooms;
+    }
+
+
 
     public String getStatus() {
         return status;

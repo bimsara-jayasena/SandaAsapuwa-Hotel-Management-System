@@ -22,6 +22,8 @@ public class BookingService {
         return  bookings;
     }
     public Bookings addBooking(
+
+            Object[] rooms,
             String firstName,
             String lastName,
             String eMail,
@@ -31,7 +33,7 @@ public class BookingService {
             Date arrivalDate,
             String arrivalTime
     ){
-        Bookings bookings=new Bookings(firstName,lastName,eMail,pickUp,contactNo,guestCount,arrivalDate,arrivalTime);
+        Bookings bookings=new Bookings(rooms,firstName,lastName,eMail,pickUp,contactNo,guestCount,arrivalDate,arrivalTime);
         bookingRepository.insert(bookings);
         return bookings;
     }

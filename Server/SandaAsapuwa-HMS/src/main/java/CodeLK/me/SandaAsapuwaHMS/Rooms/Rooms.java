@@ -25,13 +25,34 @@ public class Rooms {
         private  String availability;
 
         private  String images;
-        public Rooms(String availability,String images){
+        private Integer keyNum;
+
+        private String catagory;
+        public Rooms(String availability,String images,Integer keyNum,String catagory){
             this.roomId = this.generateRoomId();
             this.images=images;
             this.availability=availability;
+            this.keyNum=keyNum;
+            this.catagory=catagory;
         }
 
-        private String generateRoomId(){
+    public String getCatagory() {
+        return catagory;
+    }
+
+    public void setCatagory(String catagory) {
+        this.catagory = catagory;
+    }
+
+    public Integer getKeyNum() {
+        return keyNum;
+    }
+
+    public void setKeyNum(Integer keyNum) {
+        this.keyNum = keyNum;
+    }
+
+    private String generateRoomId(){
         return UUID.randomUUID().toString();
     }
 

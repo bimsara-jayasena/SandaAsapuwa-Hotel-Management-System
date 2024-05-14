@@ -27,6 +27,8 @@ public class bookingController {
     }
     @PostMapping("/add-booking")
     public ResponseEntity<Bookings> addBooking(
+
+            @RequestParam("rooms") Object[] rooms,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("email") String email,
@@ -37,6 +39,8 @@ public class bookingController {
             @RequestParam("arrivalTime") String arrivalTime
     ){
         return new ResponseEntity<Bookings>(bookingService.addBooking(
+
+                rooms,
                 firstName,
                 lastName,
                 email,
@@ -51,6 +55,7 @@ public class bookingController {
     @PutMapping("/update-booking/{bookingId}")
     public ResponseEntity<Bookings> updateBooking(
             @PathVariable String bookingId,
+
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("email") String email,

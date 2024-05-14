@@ -47,6 +47,13 @@
 			<artifactId>spring-dotenv</artifactId>
 			<version>4.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>square</artifactId>
+			<version>39.0.0.20240417</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
