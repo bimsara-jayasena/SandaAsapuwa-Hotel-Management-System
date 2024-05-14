@@ -20,7 +20,7 @@
 .body-r{
      display: flex;
      justify-content: center;
-     height: auto;
+     height: 100vh;
     
  
  }
@@ -129,7 +129,7 @@
     height:auto;
     margin: 1rem;
     background-color: dodgerblue;
-   
-   
-
+}
+.bg-blue{
+   background-color: dodgerblue;
 }

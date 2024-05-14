@@ -3,7 +3,7 @@ import axios from "axios";
 import {Chart as ChartJs,CategoryScale,LinearScale,PointElement,LineElement,Tooltip,Legend} from 'chart.js'
 import { Line } from "react-chartjs-2";
 import {format,startOfDay,parseISO} from 'date-fns';
-export default function Chart(){
+export default function Chart({height,width}){
     const [xAxis,setXaxis]=useState([]);
     const [yAxis,setYaxis]=useState([]);
     const [counts,setCounts]=useState([]);
@@ -65,7 +65,10 @@ export default function Chart(){
     return(
         <div>
            
-            <Line data={data}/>
+            <Line 
+             data={data}
+            
+            />
         </div>
     )
 

@@ -11,14 +11,16 @@ import axios from "axios";
 import { format, parseISO } from "date-fns";
 import ScrollPane from "../../../Components/Scrollpane";
 import { elements } from "chart.js";
-
+import AddBooking from "../../../Components/AddBooking";
+import { Link } from "react-router-dom";
+import { Form, InputGroup, Alert } from "react-bootstrap";
 export default function ReceptDash() {
   let roomCount = 0;
   let availableRoomCount = 0;
   let booked = 0;
 
   const { id } = useParams();
-
+  const [validated, setValidated] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [position, setPosition] = useState("");
@@ -35,8 +37,28 @@ export default function ReceptDash() {
   const [available, setAvailable] = useState(false);
   const bookingRef = useRef(booking);
   const countRef = useRef(counter);
+  const guestRef = useRef(guest);
   const [counterId, setCounterId] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const [token,setToken]=useState(0);
+  const [validToken,setValidToken]=useState(true);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }
+    else if(!validToken){
+      toast.error("invalid Token!");
+      event.stopPropagation();
+    }
+    else{
+      toast.success("Confiremd")
+      //update booking status
+    }
 
+    setValidated(true);
+  };
   /* get currunt Date */
   useEffect(() => {
     const timeToMidnight = () => {
@@ -71,18 +93,41 @@ export default function ReceptDash() {
       })
       .catch((err) => console.log(err.response));
   });
-/* Get All Bookings */
+  /* Get All Bookings */
   useEffect(() => {
     bookingRef.current = booking;
   }, [booking]);
   useEffect(() => {
+    /* this will runs only one */
+    axios
+      .get("http://localhost:8080/Bookings")
+      .then((res) => {
+        const initialBooking = res.data.filter(
+          (element) => element.status === "unconfirmed"
+        );
+        setBooking(initialBooking);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     const interval = setInterval(() => {
       axios
         .get("http://localhost:8080/Bookings")
         .then((res) => {
-          if (JSON.stringify(bookingRef.current) !== JSON.stringify(res.data)) {
-            toast.success("New Booking !");
-            setBooking(res.data);
+          const newBooking = res.data.filter(
+            (element) => element.status === "unconfirmed"
+          );
+          if (
+            JSON.stringify(bookingRef.current) !== JSON.stringify(newBooking)
+          ) {
+            if (bookingRef.current.length > newBooking.length) {
+              setBooking(newBooking);
+            } else {
+              toast.success("New Booking !");
+
+              setBooking(newBooking);
+            }
           }
         })
 
@@ -104,6 +149,9 @@ export default function ReceptDash() {
   }, [booking]);
 
   /* Get confirmed bookings */
+  useEffect(() => {
+    guestRef.current = guest;
+  }, [guest]);
   useEffect(() => {
     let count = 0;
     axios
@@ -139,7 +187,6 @@ export default function ReceptDash() {
 
   /* Add or Update Counter db */
   useEffect(() => {
-  
     if (counter.length == 0 && todayArrivals.length != 0) {
       const formData = new FormData();
       formData.append("date", format(currentDate, "yyyy-MM/dd"));
@@ -157,7 +204,10 @@ export default function ReceptDash() {
           formData.append("count", todayArrivals.length);
 
           axios
-            .patch(`http://localhost:8080/Counts/update-count/${element.counterID}`, formData)
+            .patch(
+              `http://localhost:8080/Counts/update-count/${element.counterID}`,
+              formData
+            )
             .then(console.log("updated"))
             .catch((err) => console.log(err));
         }
@@ -204,7 +254,13 @@ export default function ReceptDash() {
       .catch((err) => console.log(err));
     /* send data to counter collection */
   };
+  const close = () => {
+    setClicked(false);
+  };
 
+  const handleToken=()=>{
+    //check if token is correct or not
+  }
   return (
     <div>
       {loading ? (
@@ -285,7 +341,7 @@ export default function ReceptDash() {
               ) : (
                 <h1>{arrivals === "Today" ? "All" : "Today"} Reservations</h1>
               )}
-              <ScrollPane height="40rem">
+              <ScrollPane height="35rem">
                 {(() => {
                   if (showGuest) {
                     if (guest.length === 0) {
@@ -341,9 +397,7 @@ export default function ReceptDash() {
                                         ? "Confirmed"
                                         : "Confirm"
                                     }
-                                    onClick={(e) => {
-                                      handleConfirm(e);
-                                    }}
+                                    onClick={() => setClicked(true)}
                                     disabled={
                                       booking.status === "confirmed"
                                         ? true
@@ -380,12 +434,24 @@ export default function ReceptDash() {
                                   arrival Date:
                                   {changeDateFormat(booking.arrivalDate)}
                                   <Button
-                                    id={booking.roomId}
+                                    id={booking.bookingId}
                                     className="btn-update "
-                                    value="UPDATE"
-                                  >
-                                    Confirm
-                                  </Button>
+                                    as="input"
+                                    type="submit"
+                                    value={
+                                      booking.status === "confirmed"
+                                        ? "Confirmed"
+                                        : "Confirm"
+                                    }
+                                    onClick={() => {
+                                      setClicked(true);
+                                    }}
+                                    disabled={
+                                      booking.status === "confirmed"
+                                        ? true
+                                        : false
+                                    }
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -396,12 +462,50 @@ export default function ReceptDash() {
                   }
                 })()}
               </ScrollPane>
+              <Link to={`/AddNewBooking/${id}`}>
+                {" "}
+                <Button>Add new Booking</Button>
+              </Link>
             </div>
           </section>
         </section>
         <ToastContainer />
+        <div
+          className={
+            clicked ? "crud-alert-container zindex-on" : "crud-alert-container "
+          }
+        >
+          <div
+            className={
+              clicked ? "crud-alert display-block" : "crud-alert display-none"
+            }
+          >
+            <div className="btn-close-container">
+              <button className="close-button" onClick={close}>
+                Close
+              </button>
+            </div>
+            <div className="alert-container">
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group>
+                  <Form.Label>Token</Form.Label>
+                  <Form.Control
+                    type="Number"
+                    placeholder="Token"
+                    required
+                    style={{ width: "20rem" }}
+                    onChange={(e)=>setToken(e.target.value)}
+                  />
+                  <Form.Control.Feedback type="invalid" className="bold" />
+                </Form.Group>
+                <Button type="submit" onClick={()=>handleToken()}>Confirme</Button>
+                 
+               
+              </Form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-

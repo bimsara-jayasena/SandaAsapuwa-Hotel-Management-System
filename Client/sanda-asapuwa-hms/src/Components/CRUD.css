@@ -8,7 +8,9 @@
     align-items: center;
     flex-direction: column;
     width: 50vw;
-    height: auto
+    height: auto;
+    border: 1px solid red;
+    
 }
 .logo{
    
@@ -30,8 +32,8 @@
 }
 .crud-form-container Form{
   
-    
-    width: 25rem;
+  
+    width:auto;
 }
 .crud-form-container Form Button{
     margin-top: 1rem;
@@ -68,4 +70,31 @@
 }
 .update-alert{
     border: 1px solid red;
+}
+.form-body{
+    display: flex;
+    gap: 1rem;
+}
+.room-info,.guest-info{
+   
+}
+.room-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.btnAddRoom{
+    width: 5rem;
+}
+.rooms{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    gap: 1rem;
+    
+}
+.flex{
+    display: flex;
+    width: 15rem;
 }

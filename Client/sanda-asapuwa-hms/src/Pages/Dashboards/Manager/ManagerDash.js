@@ -8,7 +8,12 @@ import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { elements } from "chart.js";
-import{format,parseISO} from 'date-fns';
+import { format, parseISO } from "date-fns";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ScrollPane from "../../../Components/Scrollpane";
 export default function ManagerDash() {
   let roomCount = 0;
   let availableRoomCount = 0;
@@ -21,12 +26,20 @@ export default function ManagerDash() {
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(true);
   const [employes, setEmployes] = useState([]);
-  const [availableEmployes,setAvailableEmployes] = useState([]);
+  const [availableEmployes, setAvailableEmployes] = useState([]);
   const [guest, setGuest] = useState([]);
   const [booking, setBooking] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const bookingRef=useRef(booking);
-  const employeRef=useRef(availableEmployes);
+  const bookingRef = useRef(booking);
+  const employeRef = useRef(availableEmployes);
+  const [checked, setChecked] = useState(false);
+  const [radioValue, setRadioValue] = useState('1');
+  const radios = [
+    { name: 'Weekly', value: '1' },
+    { name: 'Monthly', value: '2' },
+    { name: 'Yearly', value: '3' },
+  ];
+
   useEffect(() => {
     // Function to calculate the milliseconds until midnight
     const timeToMidnight = () => {
@@ -49,7 +62,7 @@ export default function ManagerDash() {
 
     return () => clearTimeout(timeoutId); // Clear the timeout if the component unmounts
   }, [currentDate]);
-  
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/Employes/empid/${id}`)
@@ -61,77 +74,72 @@ export default function ManagerDash() {
         setLoading(false);
       })
       .catch((err) => console.log(err.response));
-  },[]);
-  
-  useEffect(()=>{
-    axios
-    .get(`http://localhost:8080/Employes`)
-    .then((res) => {
-      
-         setEmployes(res.data);
-    })
-    .catch((err) => console.log(err.response));
-  },[])
+  }, []);
 
-  useEffect(()=>{
-    employeRef.current=availableEmployes;
-  },[availableEmployes])
   useEffect(() => {
-    const interval=setInterval(()=>{
-      axios
+    axios
       .get(`http://localhost:8080/Employes`)
-      .then((res) => {  
-        const emp=res.data.filter(element=>element.position==="available");
-           if(JSON.stringify(employeRef.current)!==JSON.stringify(emp)){
-          
-            toast.success("New employee added")
-            setAvailableEmployes(emp);
-            
-           }
+      .then((res) => {
+        setEmployes(res.data);
       })
       .catch((err) => console.log(err.response));
-    },1000);
-    return ()=>clearInterval(interval);
   }, []);
-  useEffect(()=>{
-    console.log(availableEmployes)
-  },[availableEmployes])
 
-
-
- /* Get all bookings */
-  useEffect(()=>{
-    bookingRef.current=booking;
-  },[booking])
   useEffect(() => {
-   const interval=setInterval(()=>{
-    axios
-    .get(`http://localhost:8080/Bookings`)
-    .then((res) => {
-      if(JSON.stringify(bookingRef.current)!==JSON.stringify(res.data)){
-        toast.success("New Booking!");
-        setBooking(res.data);
-      
-      }
-      
-    })
-    .catch((err) => console.log(err.response));
-   },1000);
-   return ()=>clearInterval(interval);
+    employeRef.current = availableEmployes;
+  }, [availableEmployes]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios
+        .get(`http://localhost:8080/Employes`)
+        .then((res) => {
+          const emp = res.data.filter(
+            (element) => element.position === "available"
+          );
+          if (JSON.stringify(employeRef.current) !== JSON.stringify(emp)) {
+            toast.success("New employee added");
+            setAvailableEmployes(emp);
+          }
+        })
+        .catch((err) => console.log(err.response));
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
-  
-  
+  useEffect(() => {
+    console.log(availableEmployes);
+  }, [availableEmployes]);
+
+  /* Get all bookings */
+  useEffect(() => {
+    bookingRef.current = booking;
+  }, [booking]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios
+        .get(`http://localhost:8080/Bookings`)
+        .then((res) => {
+          if (JSON.stringify(bookingRef.current) !== JSON.stringify(res.data)) {
+            toast.success("New Booking!");
+            setBooking(res.data);
+          }
+        })
+        .catch((err) => console.log(err.response));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/Bookings`)
       .then((res) => {
-       const result=res.data.filter(element => element.status=="Confirmed");
-       setGuest(result);
+        const result = res.data.filter(
+          (element) => element.status == "Confirmed"
+        );
+        setGuest(result);
       })
       .catch((err) => console.log(err.response));
   }, [booking]);
- 
- 
+
   return (
     <div>
       {loading ? (
@@ -157,7 +165,9 @@ export default function ManagerDash() {
           position={position}
           profile={profile}
         />
-        <section className="body-panel">
+       <section className="scrollpane-container full-height custom-width">
+       <ScrollPane>
+      <section className="body-panel">
           <section className="header">
             <div className="card-container">
               <div className="cards">
@@ -200,18 +210,40 @@ export default function ManagerDash() {
               </div>
             </div>
           </section>
-         
+
           <section className="body">
-            <div className="chart-container">
-              Booking analysis
-            <Chart/>
+            <div className="chart-section">
+              <div className="title">Weekly Booking Analysis</div>
+
+              <div className="chart-container">
+                <div className="chart">
+                  <Chart />
+                </div>
+                <Calendar />
+              </div>
+              <ButtonGroup>
+        {radios.map((radio, idx) => (
+          <ToggleButton
+            key={idx}
+            id={`radio-${idx}`}
+            type="radio"
+            variant={ 'outline-primary' }
+            name="radio"
+            value={radio.value}
+            checked={radioValue === radio.value}
+            onChange={(e) => setRadioValue(e.currentTarget.value)}
+          >
+            {radio.name}
+          </ToggleButton>
+        ))}
+      </ButtonGroup>
             </div>
           </section>
-         
         </section>
-        
+      </ScrollPane>
+       </section>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

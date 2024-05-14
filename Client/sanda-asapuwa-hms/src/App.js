@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import Home from './Pages/Home';
+import AddNewBooking from './Pages/AddNewBooking';
 import CreateAccount from './Pages/AccoutnCreaction';
 import Manager from './Pages/Dashboards/Manager/ManagerDash';
 import Reception from './Pages/Dashboards/Reception/ReceptDash';
@@ -16,7 +17,8 @@ import RoomsR from './Pages/Dashboards/Reception/RoomsR';
 import SettingsR from './Pages/Dashboards/Reception/SettingsR';
 import {Routes,Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Test from './Pages/test';
+;
+
 
 
 function App() {
@@ -37,6 +39,7 @@ function App() {
        <Route path='/Staff-r/:id' element={<StaffR/>}/>
        <Route path='/Booking-r/:id' element={<BookingsR/>}/>
        <Route path='/Settings-r/:id' element={<SettingsR/>}/>
+      <Route path='/AddNewBooking/:id' element={<AddNewBooking/>}/>
      </Routes>
       
     </div>
