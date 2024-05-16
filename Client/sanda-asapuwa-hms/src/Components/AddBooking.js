@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Logo from "../Resources/icons8-lotus-64-white.png";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { elements } from "chart.js";
 /*  */
 
 export default function AddBooking({ empId }) {
@@ -17,6 +18,8 @@ export default function AddBooking({ empId }) {
   const [availability, setAvailability] = useState("");
   const [images, setImages] = useState("");
   const [rooms, setRooms] = useState([]);
+  const [keys,setKeys]=useState([]);
+  const [catagory,setCatagory]=useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [guestCount, setGuestCount] = useState(0);
@@ -24,19 +27,21 @@ export default function AddBooking({ empId }) {
   const [arrival, setArrival] = useState();
   const [payment, setPayment] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
-
-  const [fnameExist, setfnameExist] = useState(false);
-  const [lnameExist, setlnameExist] = useState(false);
-  const [emailExist, setEmailExist] = useState(false);
+  const [singleRoomCountExceeded,setSingleRoomCountExceeded]=useState(false);
+  const [doubleRoomCountExceeded,setDoubleRoomCountExceeded]=useState(false);
   const [isCreated, setCreated] = useState(false);
   const [show, setShow] = useState(true);
   const [roomCount, setRoomCount] = useState(1); // Initial room count
+  const [singleRoomCount,setSingleRoomCount]=useState([]);
+  const [doubleRoomCount,setDoubleRoomCount]=useState([]);
   const [roomValues, setRoomValues] = useState(
     Array.from({ length: roomCount }, () => "")
   ); // Array to hold values of each room
 
   // Function to handle changes in input fields for a specific room
   const handleRoomChange = (index, value) => {
+   
+    
     const newRoomValues = [...roomValues];
     newRoomValues[index] = value;
     setRoomValues(newRoomValues);
@@ -83,6 +88,34 @@ export default function AddBooking({ empId }) {
     setCreated(false);
   };
 
+  useEffect(()=>{
+    axios.get('http://localhost:8080/Rooms')
+    .then((res)=>{
+      const k=res.data.map(element=>element.keyNum)
+      setKeys(k);
+      const c=res.data.map(element=>element.catagory);
+      setCatagory(c);
+      const src=res.data.filter(element=>element.catagory==='single');
+      setSingleRoomCount(src);
+      const drc=res.data.filter(element=>element.catagory==='double');
+      setDoubleRoomCount(drc);
+    })
+  },[])
+  useEffect(()=>{
+ 
+   for (let index = 0; index < catagory.length; index++) {
+      let c=catagory[index];
+      let k=keys[index];
+      rooms[index]={c,k};
+
+   }
+
+  },[keys,catagory]);
+
+  useEffect(()=>{
+    console.log(rooms);
+    console.log(`single room count${singleRoomCount.length}'\n'double room count${doubleRoomCount.length}`);
+  },[rooms,singleRoomCount,doubleRoomCount]);
   return (
     <div className="crud-body crud-display-block  " style={{width:"100vw"}}>
       <h1>Add new Booking</h1>
