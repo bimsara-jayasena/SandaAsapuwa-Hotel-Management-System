@@ -42,6 +42,7 @@ export default function ReceptDash() {
   const [clicked, setClicked] = useState(false);
   const [token,setToken]=useState(0);
   const [validToken,setValidToken]=useState(true);
+  const [income,setIncome]=useState(0);
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -261,9 +262,24 @@ export default function ReceptDash() {
   const handleToken=()=>{
     //check if token is correct or not
   }
+  useEffect(()=>{
+    let total=0;
+    axios.get('http://localhost:8080/Payment/get-payment')
+    .then((res)=>{
+      res.data.forEach((element)=>{
+        total+=element.amount;
+      })
+      setIncome(total);
+    })
+    .catch((err)=>{console.log(err)})
+  },[booking])
+
+  useEffect(()=>{
+    console.log(income);
+  },[income])
   return (
     <div>
-      {loading ? (
+     {/*  {loading ? (
         <div className="loading-screen-container">
           <div className="loading-screen"></div>
           <ClipLoader
@@ -277,7 +293,7 @@ export default function ReceptDash() {
         </div>
       ) : (
         <></>
-      )}
+      )} */}
       <div className="body-r">
         <SidePanel
           id={id}
@@ -292,9 +308,9 @@ export default function ReceptDash() {
               <button className="cards">
                 <div>
                   <img src={Logo} />
-                  <h2>Total Income</h2>
+                  <h2>Today Income</h2>
                 </div>
-                <div>{roomCount}</div>
+                <div>{income}</div>
               </button>
 
               <button className="cards" onClick={handleArrivals}>

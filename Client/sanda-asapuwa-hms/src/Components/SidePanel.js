@@ -34,6 +34,7 @@ export default function SidePanel({id,firstName,lastName, position,profile} ){
                 <Link to={`/Rooms-r/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
                 <Link to={`/Staff-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
                 <Link to={`/Booking-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
+                <Link to={`/Income-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Income</button></Link>
                 <Link to={`/Settings-r/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
                  </>
             

@@ -17,6 +17,7 @@ import RoomsR from './Pages/Dashboards/Reception/RoomsR';
 import SettingsR from './Pages/Dashboards/Reception/SettingsR';
 import {Routes,Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Income from './Pages/Dashboards/Reception/Income';
 ;
 
 
@@ -38,6 +39,7 @@ function App() {
        <Route path='/Rooms-r/:id' element={<RoomsR/>}/>
        <Route path='/Staff-r/:id' element={<StaffR/>}/>
        <Route path='/Booking-r/:id' element={<BookingsR/>}/>
+       <Route path='/Income-r/:id' element={<Income/>}/>
        <Route path='/Settings-r/:id' element={<SettingsR/>}/>
       <Route path='/AddNewBooking/:id' element={<AddNewBooking/>}/>
      </Routes>

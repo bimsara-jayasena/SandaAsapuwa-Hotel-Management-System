@@ -160,8 +160,7 @@ export default function RoomsR(){
                             </div>
                         <ScrollPane>
                            
-                            {/*  
-                             */}
+                          
                              {
                                info==="all" ? 
                                <>
