@@ -16,14 +16,24 @@ public class RoomDTO {
     private  String images;
     private Integer keyNum;
     private String catagory;
-    public RoomDTO(String roomId,String availability,String image,Integer keyNum,String catagory){
+    private Integer price;
+    public RoomDTO(String roomId,String availability,String image,Integer keyNum,String catagory,Integer price){
         this.roomId = roomId;
 
         this.availability=availability;
         this.images=image;
         this.keyNum=keyNum;
         this.catagory=catagory;
+        this.price=price;
 
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public String getCatagory() {

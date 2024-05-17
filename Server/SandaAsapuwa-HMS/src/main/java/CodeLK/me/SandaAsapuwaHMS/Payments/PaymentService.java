@@ -1,16 +1,22 @@
 package CodeLK.me.SandaAsapuwaHMS.Payments;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class PaymentService {
-    public boolean processPayment(String token,boolean verifiedBuyer) {
-        // Your logic to interact with Square APIs and process payment
-
-        // Example:
-        // Call Square API with payment token
-        // Handle response and process payment
-
-        return true; // Return true if payment is successful, false otherwise
+    @Autowired
+    private paymentRepository paymentRepository;
+    public List<Payment> getPayment(){
+        List<Payment> payment=paymentRepository.findAll();
+        return payment;
+    }
+    public Payment adPayment(Integer amount,String paymentMethode,Date date){
+       Payment payment=new Payment(amount,paymentMethode,date);
+       paymentRepository.save(payment);
+       return payment;
     }
 }

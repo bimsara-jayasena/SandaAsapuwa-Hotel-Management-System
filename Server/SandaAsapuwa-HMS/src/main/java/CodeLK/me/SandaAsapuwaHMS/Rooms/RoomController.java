@@ -24,17 +24,26 @@ public class RoomController {
     public ResponseEntity<List<RoomDTO>> getAllRooms(){
         return new ResponseEntity<List<RoomDTO>>(service.getAllRooms(), HttpStatus.OK);
     }
-    @GetMapping("/get-room/{roomid}")
+    @GetMapping("/get-room/id/{roomid}")
     public ResponseEntity<RoomDTO> getRoom(@PathVariable String roomid){
         return new ResponseEntity<RoomDTO>(service.getRoom(roomid), HttpStatus.OK);
+    }
+    @GetMapping("/get-room/key/{keyNum}")
+    public ResponseEntity<RoomDTO> getRoombykey(@PathVariable Integer keyNum){
+        return new ResponseEntity<RoomDTO>(service.getRoombyKey(keyNum), HttpStatus.OK);
+    }
+    @GetMapping("/get-room/cat/{catagory}")
+    public ResponseEntity<List<RoomDTO>> getRoombykey(@PathVariable String catagory){
+        return new ResponseEntity<List<RoomDTO>>(service.getRoomByCatagory(catagory), HttpStatus.OK);
     }
      @PostMapping("/add-room")
     public ResponseEntity<Rooms> addRooms(
             @RequestParam("image") String image,
             @RequestParam("availability") String availability,
             @RequestParam("Key") Integer keyNum,
-            @RequestParam("catagory") String catagory) throws IOException {
-        return new ResponseEntity<Rooms>(service.addRooms(availability,image,keyNum,catagory), HttpStatus.CREATED);
+            @RequestParam("catagory") String catagory,
+            @RequestParam("price") Integer price) throws IOException {
+        return new ResponseEntity<Rooms>(service.addRooms(availability,image,keyNum,catagory,price), HttpStatus.CREATED);
     }
 
     @PutMapping("/update-room/{roomId}")
@@ -43,6 +52,13 @@ public class RoomController {
             @RequestParam("image") String image,
             @RequestParam("availability") String availability) throws IOException {
         return new ResponseEntity<Rooms>(service.updateRoom(roomId,availability,image), HttpStatus.CREATED);
+    }
+    @PatchMapping("/update-room/{keyNum}")
+    public ResponseEntity<Rooms> updateAvailability(
+            @PathVariable Integer keyNum,
+
+            @RequestParam("availability") String availability) throws IOException {
+        return new ResponseEntity<Rooms>(service.updateAvailability(keyNum,availability), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove-room/{roomId}")

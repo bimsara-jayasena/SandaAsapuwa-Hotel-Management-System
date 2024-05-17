@@ -19,6 +19,7 @@ public class Bookings {
 
 
     private Object[] rooms;
+    private Object[] keys;
     private String bookingId;
     private String firstName;
     private String lastName;
@@ -30,12 +31,14 @@ public class Bookings {
     private String status;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME ,pattern =  "yyyy-MM-dd")
     private Date arrivalDate;
-    private String arrivalTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME ,pattern =  "yyyy-MM-dd")
+    private Date departureDate;
 
-    public Bookings(Object[] rooms,String firstName, String lastName, String eMail,String pickUp, String contactNo, Integer guestCount, Date arrivalDate, String arrivalTime) {
+    public Bookings(Object[] rooms,Object[] keys,String firstName, String lastName, String eMail,String pickUp, String contactNo, Integer guestCount, Date arrivalDate, Date departureDate) {
         this.bookingId=setBookingId();
 
         this.rooms=rooms;
+        this.keys=keys;
         this.firstName = firstName;
         this.lastName = lastName;
         this.eMail = eMail;
@@ -43,8 +46,24 @@ public class Bookings {
         this.contactNo = contactNo;
         this.guestCount = guestCount;
         this.arrivalDate = arrivalDate;
-        this.arrivalTime = arrivalTime;
+        this.departureDate=departureDate;
         this.status="unconfirmed";
+    }
+
+    public Object[] getKeys() {
+        return keys;
+    }
+
+    public void setKeys(Object[] keys) {
+        this.keys = keys;
+    }
+
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
     }
 
     public Object[] getRooms() {
@@ -131,11 +150,5 @@ public class Bookings {
         this.arrivalDate = arrivalDate;
     }
 
-    public String getArrivalTime() {
-        return arrivalTime;
-    }
 
-    public void setArrivalTime(String arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
 }

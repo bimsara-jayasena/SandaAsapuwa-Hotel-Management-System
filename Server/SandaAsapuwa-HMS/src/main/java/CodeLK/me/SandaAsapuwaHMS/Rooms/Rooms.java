@@ -28,13 +28,23 @@ public class Rooms {
         private Integer keyNum;
 
         private String catagory;
-        public Rooms(String availability,String images,Integer keyNum,String catagory){
+    private Integer price;
+        public Rooms(String availability,String images,Integer keyNum,String catagory,Integer price){
             this.roomId = this.generateRoomId();
             this.images=images;
             this.availability=availability;
             this.keyNum=keyNum;
             this.catagory=catagory;
+            this.price=price;
         }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     public String getCatagory() {
         return catagory;

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
@@ -24,7 +25,7 @@ public class RoomService {
         List<Rooms> rooms=repository.findAll();
         List<RoomDTO> roomDTOS=rooms.stream().map((room)->{
 //            String file= Base64.getEncoder().encodeToString(room.getImages());
-            RoomDTO roomDTO=new RoomDTO(room.getRoomId(),room.getAvailability(), room.getImages(),room.getKeyNum(),room.getCatagory());
+            RoomDTO roomDTO=new RoomDTO(room.getRoomId(),room.getAvailability(), room.getImages(),room.getKeyNum(),room.getCatagory(),room.getPrice());
             return roomDTO;
         }).toList();
         return roomDTOS;
@@ -36,13 +37,39 @@ public class RoomService {
             throw new NullPointerException("No Room exist");
         });
         String file = actualRoom.getImages();
-        RoomDTO roomDTO = new RoomDTO(actualRoom.getRoomId(), actualRoom.getAvailability(), actualRoom.getImages(),actualRoom.getKeyNum(),actualRoom.getCatagory());
+        RoomDTO roomDTO = new RoomDTO(actualRoom.getRoomId(), actualRoom.getAvailability(), actualRoom.getImages(),actualRoom.getKeyNum(),actualRoom.getCatagory(), actualRoom.getPrice());
 
         return roomDTO;
     }
 
-    public Rooms addRooms(String availability,String file,Integer keyNum,String catagory) {
-        Rooms rooms = new Rooms(availability, file,keyNum,catagory);
+    public RoomDTO getRoombyKey(Integer keyNum) {
+        Optional<Rooms> room=repository.findBykeyNum(keyNum);
+        Rooms actualRoom=room.orElseThrow(()->{
+            throw new NullPointerException("No Room exist");
+        });
+        String file = actualRoom.getImages();
+        RoomDTO roomDTO = new RoomDTO(actualRoom.getRoomId(), actualRoom.getAvailability(), actualRoom.getImages(),actualRoom.getKeyNum(),actualRoom.getCatagory(), actualRoom.getPrice());
+
+        return roomDTO;
+    }
+
+    public List<RoomDTO> getRoomByCatagory(String catagory) {
+        List<Rooms> room=repository.findBycatagory(catagory);
+        List<RoomDTO> roomDTOS=room.stream().map(element->{
+            return new RoomDTO(
+                    element.getRoomId(),
+                    element.getAvailability(),
+                    element.getImages(),
+                    element.getKeyNum(),
+                    element.getCatagory(),
+                    element.getPrice());
+        }).collect(Collectors.toList());
+
+        return roomDTOS;
+    }
+
+    public Rooms addRooms(String availability,String file,Integer keyNum,String catagory,Integer price) {
+        Rooms rooms = new Rooms(availability, file,keyNum,catagory,price);
         repository.insert(rooms);
         return rooms;
     }
@@ -55,6 +82,18 @@ public class RoomService {
         });
         room.setAvailability(availability);
         room.setImages(image);
+        repository.save(room);
+        return room;
+    }
+
+    public Rooms updateAvailability(Integer keyNum,String availability){
+        Optional<Rooms> roomsOptional=repository.findBykeyNum(keyNum);
+        Rooms room=roomsOptional.orElseThrow(()->{
+            throw new NullPointerException("No room exist");
+
+        });
+        room.setAvailability(availability);
+        room.setImages(room.getImages());
         repository.save(room);
         return room;
     }

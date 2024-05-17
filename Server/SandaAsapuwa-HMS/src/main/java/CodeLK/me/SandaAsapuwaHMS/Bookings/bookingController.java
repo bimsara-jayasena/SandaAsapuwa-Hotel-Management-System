@@ -29,18 +29,21 @@ public class bookingController {
     public ResponseEntity<Bookings> addBooking(
 
             @RequestParam("rooms") Object[] rooms,
+            @RequestParam("keys") Object[] keys,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
-            @RequestParam("email") String email,
-            @RequestParam("pickup") String pickup,
-            @RequestParam("contactNo") String contactNo,
+            @RequestParam(value = "email",required = false) String email,
+            @RequestParam(value = "pickup",required = false) String pickup,
+            @RequestParam(value = "contactNo",required = false) String contactNo,
             @RequestParam("guestCount") Integer guestCount,
-            @RequestParam("arrivalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date arrivalDate,
-            @RequestParam("arrivalTime") String arrivalTime
+            @RequestParam(value = "arrivalDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date arrivalDate,
+            @RequestParam(value = "departureDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date departureDate,
+            @RequestParam(value = "status",required = false) String status
     ){
         return new ResponseEntity<Bookings>(bookingService.addBooking(
 
                 rooms,
+                keys,
                 firstName,
                 lastName,
                 email,
@@ -48,68 +51,69 @@ public class bookingController {
                 contactNo,
                 guestCount,
                 arrivalDate,
-                arrivalTime
+                departureDate,
+                status
         ),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update-booking/{bookingId}")
-    public ResponseEntity<Bookings> updateBooking(
-            @PathVariable String bookingId,
-
-            @RequestParam("firstName") String firstName,
-            @RequestParam("lastName") String lastName,
-            @RequestParam("email") String email,
-            @RequestParam("pickup") String pickup,
-            @RequestParam("contactNo") String contactNo,
-            @RequestParam("guestCount") Integer guestCount,
-            @RequestParam("arrivalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date arrivalDate,
-            @RequestParam("arrivalTime") String arrivalTime,
-            @RequestParam("Status") String Status
-    ){
-        if(Status==null){
-            Status="confirmd";
-        }
-        return new ResponseEntity<Bookings>(bookingService.updateBooking(
-                bookingId,
-                firstName,
-                lastName,
-                email,
-                pickup,
-                contactNo,
-                guestCount,
-                arrivalDate,
-                arrivalTime,
-                Status
-        ),HttpStatus.CREATED);
-    }
-    @PatchMapping("/update-booking/patch/{bookingId}")
-    public ResponseEntity<Bookings> updateBookingS(
-            @PathVariable String bookingId,
-            @RequestParam(value = "firstName",required = false) String firstName,
-            @RequestParam(value = "lastName",required = false) String lastName,
-            @RequestParam(value = "email",required = false) String email,
-            @RequestParam(value = "pickup",required = false) String pickup,
-            @RequestParam(value = "contactNo",required = false) String contactNo,
-            @RequestParam(value = "guestCount",required = false) Integer guestCount,
-            @RequestParam(value = "arrivalDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date arrivalDate,
-            @RequestParam(value = "arrivalTime",required = false) String arrivalTime,
-            @RequestParam(value = "Status",required = false) String Status
-    ){
-        if(Status==null){
-            Status="confirmd";
-        }
-        return new ResponseEntity<Bookings>(bookingService.updateBooking(
-                bookingId,
-                firstName,
-                lastName,
-                email,
-                pickup,
-                contactNo,
-                guestCount,
-                arrivalDate,
-                arrivalTime,
-                Status
-        ),HttpStatus.CREATED);
-    }
+//    @PutMapping("/update-booking/{bookingId}")
+//    public ResponseEntity<Bookings> updateBooking(
+//            @PathVariable String bookingId,
+//
+//            @RequestParam("firstName") String firstName,
+//            @RequestParam("lastName") String lastName,
+//            @RequestParam("email") String email,
+//            @RequestParam("pickup") String pickup,
+//            @RequestParam("contactNo") String contactNo,
+//            @RequestParam("guestCount") Integer guestCount,
+//            @RequestParam("arrivalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date arrivalDate,
+//            @RequestParam("arrivalTime") String arrivalTime,
+//            @RequestParam("Status") String Status
+//    ){
+//        if(Status==null){
+//            Status="confirmd";
+//        }
+//        return new ResponseEntity<Bookings>(bookingService.updateBooking(
+//                bookingId,
+//                firstName,
+//                lastName,
+//                email,
+//                pickup,
+//                contactNo,
+//                guestCount,
+//                arrivalDate,
+//                arrivalTime,
+//                Status
+//        ),HttpStatus.CREATED);
+//    }
+//    @PatchMapping("/update-booking/patch/{bookingId}")
+//    public ResponseEntity<Bookings> updateBookingS(
+//            @PathVariable String bookingId,
+//            @RequestParam(value = "firstName",required = false) String firstName,
+//            @RequestParam(value = "lastName",required = false) String lastName,
+//            @RequestParam(value = "email",required = false) String email,
+//            @RequestParam(value = "pickup",required = false) String pickup,
+//            @RequestParam(value = "contactNo",required = false) String contactNo,
+//            @RequestParam(value = "guestCount",required = false) Integer guestCount,
+//            @RequestParam(value = "arrivalDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date arrivalDate,
+//            @RequestParam(value = "arrivalTime",required = false) String arrivalTime,
+//            @RequestParam(value = "Status",required = false) String Status
+//    ){
+//        if(Status==null){
+//            Status="confirmd";
+//        }
+//        return new ResponseEntity<Bookings>(bookingService.updateBooking(
+//                bookingId,
+//                firstName,
+//                lastName,
+//                email,
+//                pickup,
+//                contactNo,
+//                guestCount,
+//                arrivalDate,
+//                arrivalTime,
+//                Status
+//        ),HttpStatus.CREATED);
+//    }
 
 }
