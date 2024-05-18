@@ -41,6 +41,7 @@ export default function StaffR() {
         setLastName(res.data.lastName);
         setPosition(res.data.position);
         setProfile(res.data.profileImg);
+        setLoading(false);
       })
       .catch((err) => console.log(err.response));
   }, []);
@@ -85,9 +86,9 @@ export default function StaffR() {
   };
  
 
-  
-  return (
-    <div>
+  const render=()=>{
+    return(
+      <div>
       <section className="body">
         <section className="header">
           <SidePanel
@@ -244,7 +245,7 @@ export default function StaffR() {
                           email={employe.eMail}
                           address={employe.address}
                           contactNo={employe.contactNo}
-                          password={employe.password}
+                         
                         />
                       );
                     }
@@ -259,6 +260,24 @@ export default function StaffR() {
         
       </section>
       <ToastContainer/>
+    </div>
+    )
+  }
+  return (
+    <div>
+   {loading ? <div className="loading-screen-container">
+                <div className="loading-screen"></div>
+                <ClipLoader
+                                    color="dodgerblue"
+                                    loading={true}
+                                    size={150}
+                                    aria-label="Loading Spinner"
+                                    data-testid="loader"
+                                    className="loading-spinner"
+                                />
+                     </div>:<> {render()}</>}
+   
+    
     </div>
   );
 }

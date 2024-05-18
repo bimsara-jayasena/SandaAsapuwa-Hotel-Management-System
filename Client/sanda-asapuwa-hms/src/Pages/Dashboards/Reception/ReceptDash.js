@@ -25,7 +25,7 @@ export default function ReceptDash() {
   const [lastName, setLastName] = useState("");
   const [position, setPosition] = useState("");
   const [profile, setProfile] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [booking, setBooking] = useState([]);
   const [arrivals, setArrivals] = useState("Today");
   const [todayArrivals, setTodayArrivals] = useState([]);
@@ -277,9 +277,241 @@ export default function ReceptDash() {
   useEffect(()=>{
     console.log(income);
   },[income])
+  const render=()=>{
+    return(
+      <div className="body-r">
+      <SidePanel
+        id={id}
+        firstName={firstName}
+        lastName={lastName}
+        position={position}
+        profile={profile}
+      />
+      <section className="body-panel-r">
+        <section className="header">
+          <div className="card-container">
+            <button className="cards">
+              <div>
+                <img src={Logo} />
+                <h2>Today Income</h2>
+              </div>
+              <div>{income}</div>
+            </button>
+
+            <button className="cards" onClick={handleArrivals}>
+              <div>
+                <img src={Logo} />
+                <h2>{arrivals} Arrivals</h2>
+              </div>
+              <div>
+                {arrivals === "All" ? booking.length : todayArrivals.length}
+              </div>
+            </button>
+
+            <button className="cards" onClick={handleGuest}>
+              <div>
+                <img src={Logo} />
+                <h2>Guest Count</h2>
+              </div>
+              <div>{guest.length}</div>
+            </button>
+          </div>
+        </section>
+        <section className="search-bar"></section>
+        <section className="body">
+          <div className="scrollpane-container-r">
+            <div>
+              {loading ? (
+                <div className="loading-screen-container-scrollpane">
+                  <div className="loading-screen-scrollpane"></div>
+                  <ClipLoader
+                    color="dodgerblue"
+                    loading={true}
+                    size={150}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                    className="loading-spinner"
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+            {showGuest ? (
+              <h1>Guest Reservations</h1>
+            ) : (
+              <h1>{arrivals === "Today" ? "All" : "Today"} Reservations</h1>
+            )}
+            <ScrollPane height="35rem">
+              {(() => {
+                if (showGuest) {
+                  if (guest.length === 0) {
+                    return <div>No guest</div>;
+                  } else {
+                    return guest.map((guest) => {
+                      return (
+                        <div>
+                          <div className="crud-container">
+                            <div className="crud-img">
+                              <img src="" alt={guest.images} />
+                            </div>
+                            <div className="crud-info">
+                              booking Id:{guest.bookingId}
+                              <br />
+                              guest Name: {guest.firstName} {guest.lastName}
+                              <br />
+                              arrival Date:
+                              {changeDateFormat(guest.arrivalDate)}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    });
+                  }
+                } else if (arrivals === "Today") {
+                  return (
+                    <div>
+                      {booking.map((booking) => {
+                        return (
+                          <div>
+                            <div className="crud-container">
+                              <div className="crud-img">
+                                <img src="" alt={booking.images} />
+                              </div>
+                              <div className="crud-info">
+                                booking Id:{booking.bookingId}
+                                <br />
+                                guest Name: {booking.firstName}{" "}
+                                {booking.lastName}
+                                <br />
+                                arrival Date:
+                                {changeDateFormat(booking.arrivalDate)}
+                                <br />
+                                Status: {booking.status}
+                                <Button
+                                  id={booking.bookingId}
+                                  className="btn-update "
+                                  as="input"
+                                  type="submit"
+                                  value={
+                                    booking.status === "confirmed"
+                                      ? "Confirmed"
+                                      : "Confirm"
+                                  }
+                                  onClick={() => setClicked(true)}
+                                  disabled={
+                                    booking.status === "confirmed"
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                } else if (todayArrivals.length === 0) {
+                  return (
+                    <div>
+                      <h1>No Reservations for today</h1>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div>
+                      {todayArrivals.map((booking) => {
+                        return (
+                          <div>
+                            <div className="crud-container">
+                              <div className="crud-img">
+                                <img src="" alt={booking.images} />
+                              </div>
+                              <div className="crud-info">
+                                booking Id:{booking.bookingId}
+                                guest Name: {booking.firstName}{" "}
+                                {booking.lastName}
+                                arrival Date:
+                                {changeDateFormat(booking.arrivalDate)}
+                                <Button
+                                  id={booking.bookingId}
+                                  className="btn-update "
+                                  as="input"
+                                  type="submit"
+                                  value={
+                                    booking.status === "confirmed"
+                                      ? "Confirmed"
+                                      : "Confirm"
+                                  }
+                                  onClick={() => {
+                                    setClicked(true);
+                                  }}
+                                  disabled={
+                                    booking.status === "confirmed"
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                }
+              })()}
+            </ScrollPane>
+            <Link to={`/AddNewBooking/${id}`}>
+              {" "}
+              <Button>Add new Booking</Button>
+            </Link>
+          </div>
+        </section>
+      </section>
+      <ToastContainer />
+      <div
+        className={
+          clicked ? "crud-alert-container zindex-on" : "crud-alert-container "
+        }
+      >
+        <div
+          className={
+            clicked ? "crud-alert display-block" : "crud-alert display-none"
+          }
+        >
+          <div className="btn-close-container">
+            <button className="close-button" onClick={close}>
+              Close
+            </button>
+          </div>
+          <div className="alert-container">
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+              <Form.Group>
+                <Form.Label>Token</Form.Label>
+                <Form.Control
+                  type="Number"
+                  placeholder="Token"
+                  required
+                  style={{ width: "20rem" }}
+                  onChange={(e)=>setToken(e.target.value)}
+                />
+                <Form.Control.Feedback type="invalid" className="bold" />
+              </Form.Group>
+              <Button type="submit" onClick={()=>handleToken()}>Confirme</Button>
+               
+             
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
+    )
+  }
   return (
     <div>
-     {/*  {loading ? (
+      {loading ? (
         <div className="loading-screen-container">
           <div className="loading-screen"></div>
           <ClipLoader
@@ -291,237 +523,10 @@ export default function ReceptDash() {
             className="loading-spinner"
           />
         </div>
-      ) : (
-        <></>
-      )} */}
-      <div className="body-r">
-        <SidePanel
-          id={id}
-          firstName={firstName}
-          lastName={lastName}
-          position={position}
-          profile={profile}
-        />
-        <section className="body-panel-r">
-          <section className="header">
-            <div className="card-container">
-              <button className="cards">
-                <div>
-                  <img src={Logo} />
-                  <h2>Today Income</h2>
-                </div>
-                <div>{income}</div>
-              </button>
-
-              <button className="cards" onClick={handleArrivals}>
-                <div>
-                  <img src={Logo} />
-                  <h2>{arrivals} Arrivals</h2>
-                </div>
-                <div>
-                  {arrivals === "All" ? booking.length : todayArrivals.length}
-                </div>
-              </button>
-
-              <button className="cards" onClick={handleGuest}>
-                <div>
-                  <img src={Logo} />
-                  <h2>Guest Count</h2>
-                </div>
-                <div>{guest.length}</div>
-              </button>
-            </div>
-          </section>
-          <section className="search-bar"></section>
-          <section className="body">
-            <div className="scrollpane-container-r">
-              <div>
-                {loading ? (
-                  <div className="loading-screen-container-scrollpane">
-                    <div className="loading-screen-scrollpane"></div>
-                    <ClipLoader
-                      color="dodgerblue"
-                      loading={true}
-                      size={150}
-                      aria-label="Loading Spinner"
-                      data-testid="loader"
-                      className="loading-spinner"
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              {showGuest ? (
-                <h1>Guest Reservations</h1>
-              ) : (
-                <h1>{arrivals === "Today" ? "All" : "Today"} Reservations</h1>
-              )}
-              <ScrollPane height="35rem">
-                {(() => {
-                  if (showGuest) {
-                    if (guest.length === 0) {
-                      return <div>No guest</div>;
-                    } else {
-                      return guest.map((guest) => {
-                        return (
-                          <div>
-                            <div className="crud-container">
-                              <div className="crud-img">
-                                <img src="" alt={guest.images} />
-                              </div>
-                              <div className="crud-info">
-                                booking Id:{guest.bookingId}
-                                <br />
-                                guest Name: {guest.firstName} {guest.lastName}
-                                <br />
-                                arrival Date:
-                                {changeDateFormat(guest.arrivalDate)}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      });
-                    }
-                  } else if (arrivals === "Today") {
-                    return (
-                      <div>
-                        {booking.map((booking) => {
-                          return (
-                            <div>
-                              <div className="crud-container">
-                                <div className="crud-img">
-                                  <img src="" alt={booking.images} />
-                                </div>
-                                <div className="crud-info">
-                                  booking Id:{booking.bookingId}
-                                  <br />
-                                  guest Name: {booking.firstName}{" "}
-                                  {booking.lastName}
-                                  <br />
-                                  arrival Date:
-                                  {changeDateFormat(booking.arrivalDate)}
-                                  <br />
-                                  Status: {booking.status}
-                                  <Button
-                                    id={booking.bookingId}
-                                    className="btn-update "
-                                    as="input"
-                                    type="submit"
-                                    value={
-                                      booking.status === "confirmed"
-                                        ? "Confirmed"
-                                        : "Confirm"
-                                    }
-                                    onClick={() => setClicked(true)}
-                                    disabled={
-                                      booking.status === "confirmed"
-                                        ? true
-                                        : false
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  } else if (todayArrivals.length === 0) {
-                    return (
-                      <div>
-                        <h1>No Reservations for today</h1>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div>
-                        {todayArrivals.map((booking) => {
-                          return (
-                            <div>
-                              <div className="crud-container">
-                                <div className="crud-img">
-                                  <img src="" alt={booking.images} />
-                                </div>
-                                <div className="crud-info">
-                                  booking Id:{booking.bookingId}
-                                  guest Name: {booking.firstName}{" "}
-                                  {booking.lastName}
-                                  arrival Date:
-                                  {changeDateFormat(booking.arrivalDate)}
-                                  <Button
-                                    id={booking.bookingId}
-                                    className="btn-update "
-                                    as="input"
-                                    type="submit"
-                                    value={
-                                      booking.status === "confirmed"
-                                        ? "Confirmed"
-                                        : "Confirm"
-                                    }
-                                    onClick={() => {
-                                      setClicked(true);
-                                    }}
-                                    disabled={
-                                      booking.status === "confirmed"
-                                        ? true
-                                        : false
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  }
-                })()}
-              </ScrollPane>
-              <Link to={`/AddNewBooking/${id}`}>
-                {" "}
-                <Button>Add new Booking</Button>
-              </Link>
-            </div>
-          </section>
-        </section>
-        <ToastContainer />
-        <div
-          className={
-            clicked ? "crud-alert-container zindex-on" : "crud-alert-container "
-          }
-        >
-          <div
-            className={
-              clicked ? "crud-alert display-block" : "crud-alert display-none"
-            }
-          >
-            <div className="btn-close-container">
-              <button className="close-button" onClick={close}>
-                Close
-              </button>
-            </div>
-            <div className="alert-container">
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group>
-                  <Form.Label>Token</Form.Label>
-                  <Form.Control
-                    type="Number"
-                    placeholder="Token"
-                    required
-                    style={{ width: "20rem" }}
-                    onChange={(e)=>setToken(e.target.value)}
-                  />
-                  <Form.Control.Feedback type="invalid" className="bold" />
-                </Form.Group>
-                <Button type="submit" onClick={()=>handleToken()}>Confirme</Button>
-                 
-               
-              </Form>
-            </div>
-          </div>
-        </div>
-      </div>
+      ) : 
+        <>{render()}</>
+        }
+     
     </div>
   );
 }

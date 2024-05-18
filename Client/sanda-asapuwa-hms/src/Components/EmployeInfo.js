@@ -119,10 +119,10 @@ export default function EmployeInfo({
                 <th>Contact No</th>
                 <th>{contactNo}</th>
               </tr>
-              <tr>
+             {password==null ? <></> :  <tr>
                 <th>password</th>
                 <th>{password}</th>
-              </tr>
+              </tr>}
             </tbody>
           </Table>
         </div>
