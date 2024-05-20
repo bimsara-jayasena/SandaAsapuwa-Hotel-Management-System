@@ -33,6 +33,7 @@ export default function ReceptDash() {
   const [todayCount, setTodayCount] = useState(0);
   const [showGuest, setShowGuest] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date()); // Initialize state with the current date
+  /* const [currentDate,setCurrentDate]=useState("2024/03/28"); */
   const [counter, setCounter] = useState([]);
   const [available, setAvailable] = useState(false);
   const bookingRef = useRef(booking);
@@ -61,7 +62,7 @@ export default function ReceptDash() {
     setValidated(true);
   };
   /* get currunt Date */
-  useEffect(() => {
+  /* useEffect(() => {
     const timeToMidnight = () => {
       const now = new Date();
       const midnight = new Date(
@@ -80,7 +81,7 @@ export default function ReceptDash() {
     }, timeToMidnight());
 
     return () => clearTimeout(timeoutId);
-  }, [currentDate]);
+  }, [currentDate]); */
 
   useEffect(() => {
     axios
@@ -119,16 +120,11 @@ export default function ReceptDash() {
           const newBooking = res.data.filter(
             (element) => element.status === "unconfirmed"
           );
-          if (
-            JSON.stringify(bookingRef.current) !== JSON.stringify(newBooking)
-          ) {
-            if (bookingRef.current.length > newBooking.length) {
-              setBooking(newBooking);
-            } else {
-              toast.success("New Booking !");
+          if (JSON.stringify(bookingRef.current) !== JSON.stringify(newBooking)) {
+           
+            toast.success("New Booking !");
 
               setBooking(newBooking);
-            }
           }
         })
 
@@ -144,7 +140,7 @@ export default function ReceptDash() {
     const today = booking.filter(
       (element) =>
         format(parseISO(element.arrivalDate), "yyyy/MM/dd") ===
-        format(currentDate, "yyyy/MM/dd")
+        /* format(currentDate, "yyyy/MM/dd") */currentDate
     );
     setTodayArrivals(today);
   }, [booking]);
@@ -174,29 +170,32 @@ export default function ReceptDash() {
     axios
       .get("http://localhost:8080/Counts")
       .then((res) => {
-        const result = res.data.filter(
-          (element) =>
-            format(parseISO(element.date), "yyyy/MM/dd") ==
-            format(currentDate, "yyyy/MM/dd")
-        );
-        setCounter(result);
+        if(JSON.stringify(countRef.current)!==JSON.stringify(res.data)){
+          const result = res.data.filter((element) =>format(parseISO(element.date), "yyyy/MM/dd") ===format((currentDate), "yyyy/MM/dd"));
+          setCounter(result);
+        }
+        
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [booking]);
 
   /* Add or Update Counter db */
   useEffect(() => {
+    console.log(counter.length);
+    console.log(todayArrivals);
     if (counter.length == 0 && todayArrivals.length != 0) {
       const formData = new FormData();
-      formData.append("date", format(currentDate, "yyyy-MM/dd"));
+      formData.append("date", format(currentDate, "yyyy-MM-dd"));
       formData.append("count", todayArrivals.length);
 
       axios
         .post("http://localhost:8080/Counts/Add-count", formData)
         .then(console.log("new data added"))
         .catch((err) => console.log(err));
+      
+
     } else {
       counter.forEach((element) => {
         if (todayArrivals.length != 0) {
@@ -213,7 +212,10 @@ export default function ReceptDash() {
             .catch((err) => console.log(err));
         }
       });
+     
     }
+    console.log(currentDate)
+    
   }, [counter, todayArrivals]);
 
   /* Change date format */

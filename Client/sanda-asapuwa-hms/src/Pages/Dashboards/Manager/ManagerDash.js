@@ -11,8 +11,8 @@ import { elements } from "chart.js";
 import { format, parseISO } from "date-fns";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
 import ScrollPane from "../../../Components/Scrollpane";
 export default function ManagerDash() {
   let roomCount = 0;
@@ -33,11 +33,20 @@ export default function ManagerDash() {
   const bookingRef = useRef(booking);
   const employeRef = useRef(availableEmployes);
   const [checked, setChecked] = useState(false);
-  const [radioValue, setRadioValue] = useState('1');
+  const [radioValue, setRadioValue] = useState("1");
+  const [income, setIncome] = useState(0);
+  const [view, setView] = useState("month");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  
+  const [date, setDate] = useState("");
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [week, setWeek] = useState([]);
+  const [month, setMonth] = useState([]);
   const radios = [
-    { name: 'Weekly', value: '1' },
-    { name: 'Monthly', value: '2' },
-    { name: 'Yearly', value: '3' },
+    { name: "Weekly", value: "1" },
+    { name: "Monthly", value: "2" },
+    { name: "Yearly", value: "3" },
   ];
 
   useEffect(() => {
@@ -113,7 +122,23 @@ export default function ManagerDash() {
   useEffect(() => {
     bookingRef.current = booking;
   }, [booking]);
+  const guestRef = useRef(guest);
   useEffect(() => {
+    guestRef.current = guest;
+  }, [guest]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/Bookings")
+      .then((res) => {
+        setBooking(res.data);
+        const count = res.data.filter(
+          (element) => element.status === "confirmed"
+        );
+        setGuest(count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     const interval = setInterval(() => {
       axios
         .get(`http://localhost:8080/Bookings`)
@@ -122,11 +147,33 @@ export default function ManagerDash() {
             toast.success("New Booking!");
             setBooking(res.data);
           }
+          const count = res.data.filter(
+            (element) => element.status === "confirmed"
+          );
+          if (JSON.stringify(guestRef.current) !== JSON.stringify(res.data)) {
+            setGuest(count);
+          }
         })
         .catch((err) => console.log(err.response));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+  /* get guest */
+
+  /* Get income */
+  useEffect(() => {
+    let total = 0;
+    axios
+      .get("http://localhost:8080/Payment/get-payment")
+      .then((res) => {
+        res.data.forEach((element) => {
+          total += element.amount;
+        });
+
+        setIncome(total);
+      })
+      .catch((err) => console.log(err));
+  }, [booking]);
 
   useEffect(() => {
     axios
@@ -139,6 +186,88 @@ export default function ManagerDash() {
       })
       .catch((err) => console.log(err.response));
   }, [booking]);
+
+  const changeView = (value) => {
+    if (value == 1) {
+      setView("month");
+    } else if (value == 2) {
+      setView("year");
+    } else if (value == 3) {
+      setView("decade");
+    }
+  };
+  const prevStartDate=useRef(startDate);
+  const prevEndDate=useRef(endDate);
+
+  useEffect(()=>{prevStartDate.current=startDate},[startDate]);
+  useEffect(()=>{prevEndDate.current=endDate},[endDate]);
+
+  const getdateInfo = (event) => {
+    if (view === "month") {
+      if (date === "") {
+        setDate("select start and end");
+      }
+    } else if (view === "year") {
+      const selectedDate=event.getFullYear() + "-" +(event.getMonth() + 1)+ "-" +event.getDate()
+      if (!startDate  && !endDate) {
+        setStartDate( selectedDate);
+      } 
+      else if (startDate&& !endDate){
+        setEndDate( selectedDate);
+      }
+      else{
+        setStartDate(selectedDate);
+        setEndDate("");
+      }
+     
+    } 
+    else if (view === "decade") {
+      setDate(event.getFullYear());
+      const selectedDate=event.getFullYear() + "-" +(event.getMonth() + 1)+ "-" +event.getDate()
+      if (!startDate  && !endDate) {
+        setStartDate( selectedDate);
+      } 
+      else if (startDate&& !endDate){
+        setEndDate( selectedDate);
+      }
+      else{
+        setStartDate(selectedDate);
+        setEndDate("");
+      }
+    }
+  };
+  const handleRangeChange = (value) => {
+    setDateRange(value);
+  };
+  const getWeek = () => {
+    const [start, end] = dateRange;
+    if (start && end) {
+      const [start, end] = dateRange;
+      const startdate = new Date(start);
+      const enddate = new Date(end);
+
+      const formattedStartDate = format(startdate, "yyyy-MM-dd");
+      const formattedEndDate = format(enddate, "yyyy-MM-dd");
+      setStartDate(formattedStartDate);
+      setEndDate(formattedEndDate);
+    /*   axios
+        .get(
+          `http://localhost:8080/Counts/get-counts/${formattedStartDate}/${formattedEndDate}`
+        )
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err)); */
+    }
+  };
+  useEffect(() => {
+    getWeek();
+  }, [dateRange]);
+
+/*   useEffect(() => {
+    console.log("============================")
+    console.log("starting date",startDate);
+    console.log("ending date",endDate);
+    console.log("============================")
+  }, [startDate,endDate]); */
 
   return (
     <div>
@@ -165,83 +294,92 @@ export default function ManagerDash() {
           position={position}
           profile={profile}
         />
-       <section className="scrollpane-container full-height custom-width">
-       <ScrollPane>
-      <section className="body-panel">
-          <section className="header">
-            <div className="card-container">
-              <div className="cards">
-                <div>
-                  <img src={Logo} />
-                  <h2>Total Income</h2>
-                </div>
-                <div>{roomCount}</div>
-              </div>
+        <section className="scrollpane-container full-height custom-width">
+          <ScrollPane>
+            <section className="body-panel">
+              <section className="header">
+                <div className="card-container">
+                  <div className="cards">
+                    <div>
+                      <img src={Logo} />
+                      <h2>Total Income</h2>
+                    </div>
+                    <div>{income}</div>
+                  </div>
 
-              <div className="cards">
-                <div>
-                  <img src={Logo} />
-                  <h2>Booked Rooms</h2>
-                </div>
-                <div>{booking.length}</div>
-              </div>
+                  <div className="cards">
+                    <div>
+                      <img src={Logo} />
+                      <h2>Booked Rooms</h2>
+                    </div>
+                    <div>{booking.length}</div>
+                  </div>
 
-              <div className="cards">
-                <div>
-                  <img src={Logo} />
-                  <h2>Guest Count</h2>
-                </div>
-                <div>{guest.length}</div>
-              </div>
+                  <div className="cards">
+                    <div>
+                      <img src={Logo} />
+                      <h2>In house Guest</h2>
+                    </div>
+                    <div>{guest.length}</div>
+                  </div>
 
-              <div className="cards">
-                <div>
-                  <img src={Logo} />
-                  <h2>Staff Count</h2>
+                  <div className="cards">
+                    <div>
+                      <img src={Logo} />
+                      <h2>Staff Count</h2>
+                    </div>
+                    <div>{availableEmployes.length}</div>
+                  </div>
+                  <div className="cards">
+                    <div>
+                      <img src={Logo} />
+                      <h2>Reviews</h2>
+                    </div>
+                    <div>{availableRoomCount}</div>
+                  </div>
                 </div>
-                <div>{availableEmployes.length}</div>
-              </div>
-              <div className="cards">
-                <div>
-                  <img src={Logo} />
-                  <h2>Reviews</h2>
-                </div>
-                <div>{availableRoomCount}</div>
-              </div>
-            </div>
-          </section>
+              </section>
 
-          <section className="body">
-            <div className="chart-section">
-              <div className="title">Weekly Booking Analysis</div>
+              <section className="body">
+                <div className="chart-section">
+                  <div className="title">Weekly Booking Analysis</div>
 
-              <div className="chart-container">
-                <div className="chart">
-                  <Chart />
+                  <div className="chart-container">
+                    <div className="chart">
+                      <Chart startDate={startDate} endDate={endDate} timeSpan={view}/>
+                    </div>
+                    <Calendar
+                      view={view}
+                      selectRange
+                      onChange={handleRangeChange}
+                      value={dateRange}
+                      onClickDay={(e) => getdateInfo(e)}
+                      onClickMonth={(e) => getdateInfo(e)}
+                      onClickYear={(e) => getdateInfo(e)}
+                    />
+                  </div>
+                  <ButtonGroup>
+                    {radios.map((radio, idx) => (
+                      <ToggleButton
+                        key={idx}
+                        id={`radio-${idx}`}
+                        type="radio"
+                        variant={"outline-primary"}
+                        name="radio"
+                        value={radio.value}
+                        checked={radioValue === radio.value}
+                        onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        onClick={(e) => changeView(radio.value)}
+                      >
+                        {radio.name}
+                      </ToggleButton>
+                    ))}
+                  </ButtonGroup>
                 </div>
-                <Calendar />
-              </div>
-              <ButtonGroup>
-        {radios.map((radio, idx) => (
-          <ToggleButton
-            key={idx}
-            id={`radio-${idx}`}
-            type="radio"
-            variant={ 'outline-primary' }
-            name="radio"
-            value={radio.value}
-            checked={radioValue === radio.value}
-            onChange={(e) => setRadioValue(e.currentTarget.value)}
-          >
-            {radio.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-            </div>
-          </section>
+              </section>
+            </section>
+          </ScrollPane>
         </section>
-      </ScrollPane>
-       </section>
       </div>
       <ToastContainer />
     </div>

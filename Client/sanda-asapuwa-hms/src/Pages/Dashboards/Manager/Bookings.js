@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Scrollpane from "../../../Components/Scrollpane";
 import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
+import { elements } from "chart.js";
 export default function Bookings() {
   const { id } = useParams();
 
@@ -17,6 +18,31 @@ export default function Bookings() {
   const [position, setPosition] = useState("");
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [inHouse, setInHouse] = useState([]);
+  const [booking, setBooking] = useState([]);
+  const [title, setTitle] = useState("All Reservations");
+
+  useEffect(() => {
+    const timeToMidnight = () => {
+      const now = new Date();
+      const midnight = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0,
+        0,
+        0
+      );
+      return midnight.getTime() - now.getTime();
+    };
+
+    const timeoutId = setTimeout(() => {
+      setCurrentDate(new Date()); // Updates the currentDate at midnight
+    }, timeToMidnight());
+
+    return () => clearTimeout(timeoutId);
+  }, [currentDate]);
 
   useEffect(() => {
     axios
@@ -29,9 +55,41 @@ export default function Bookings() {
       })
       .catch((err) => console.log(err.response));
   });
-  const click=()=>{
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/Bookings`)
+      .then((res) => {
+        setBookings(res.data);
+        const unconfirmed = res.data.filter(
+          (element) => element.status === "unconfirmed"
+        );
+        const today = unconfirmed.filter(
+          (element) =>
+            format(parseISO(element.arrivalDate), "yyyy-MM-dd") ===
+            format(currentDate, "yyyy-MM-dd")
+        );
+
+        const inhouse = res.data.filter(
+          (element) => element.status === "confirmed"
+        );
+        const todaydep = res.data.filter(
+          (element) =>
+            format(parseISO(element.departureDate), "yyyy-MM-dd") ===
+            format(currentDate, "yyyy-MM-dd")
+        );
+        setTodayBooking(today);
+        setTodayDeparture(todaydep);
+        setInHouse(inhouse);
+        console.log(todaydep);
+      })
+      .catch((err) => console.log(err.response));
+  });
+  const click = () => {
     alert("clicked");
-  }
+  };
+  const renderTable = () => {
+   
+  };
 
   return (
     <div>
@@ -46,7 +104,7 @@ export default function Bookings() {
           />
         </section>
         <section className="body-panel">
-         Reservations information
+          Reservations information
           <div className="card-container align-items-center">
             <div className="cards">
               <div>
@@ -64,8 +122,7 @@ export default function Bookings() {
               <div>2</div>
             </div>
 
-        
-          <div className="cards">
+            <div className="cards">
               <div>
                 <img src={Logo} />
                 <h2>In House Guests</h2>
@@ -76,11 +133,9 @@ export default function Bookings() {
           <div className="search-bar">
             <input type="text" placeholder="Search here..." />
           </div>
-
-          
-            <div className="scrollpane-container">
+          <div className="scrollpane-container">
             <div>
-               {/* {loading ? (
+              {/* {loading ? (
                 <div className="loading-screen-container-scrollpane">
                   <div className="loading-screen-scrollpane"></div>
                   <ClipLoader
@@ -96,62 +151,7 @@ export default function Bookings() {
                 <></>
               )}  */}
             </div>
-            <Scrollpane>
-              <div className="table">
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Reservation Id</th>
-                      {/* <th>Room</th> */}
-                      <th>Guest Name</th>
-                      <th>Total Guest</th>
-                      <th>Arrival Date</th>
-                     {/*  <th>Departure Date</th>
-                      <th>Days staying</th>
-                      <th>Payed amount</th> */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>Mark</td>
-                      <td>4</td>
-                      <td>01.05.24</td>
-                      <td>14.05.24</td>
-                      <td>5</td>
-                      <td>$500</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>1</td>
-                      <td>Jacob</td>
-                      <td>1</td>
-                      <td>02.05.24</td>
-                      <td>6.05.24</td>
-                      <td>4</td>
-                      <td>$30</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>1</td>
-                      <td>Larry the Bird</td>
-                      <td>2</td>
-                      <td>03.05.24</td>
-                      <td>7.05.24</td>
-                      <td>4</td>
-                      <td>$50</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-            </Scrollpane>
-          </div> 
-           
-           
-         
-        
-         
+          </div>
         </section>
       </section>
     </div>

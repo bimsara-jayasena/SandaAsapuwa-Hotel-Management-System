@@ -22,7 +22,9 @@ export default function BookingsR() {
   const[currentDate,setCurrentDate]=useState(new Date());
   const [bookings, setBookings] = useState([]);
   const[todayBooking,setTodayBooking]=useState([]);
+  const[todayDeparture,setTodayDeparture]=useState([]);
   const[inHouse,setInHouse]=useState([]);
+  const [title,setTitle]=useState("All Reservations");
   useEffect(() => {
     const timeToMidnight = () => {
       const now = new Date();
@@ -63,13 +65,212 @@ export default function BookingsR() {
       .get(`http://localhost:8080/Bookings`)
       .then((res) => {
         setBookings(res.data);
-        const today=res.data.filter(element=>element.arrivalDate===format((currentDate),'yyyy-MM-dd'));
+        const unconfirmed=res.data.filter(element=>element.status==='unconfirmed');
+        const today=unconfirmed.filter(element=>format(parseISO(element.arrivalDate),'yyyy-MM-dd')===format((currentDate),'yyyy-MM-dd'));
+        
         const inhouse=res.data.filter(element=>element.status==='confirmed');
+        const todaydep=res.data.filter(element=>format(parseISO(element.departureDate),'yyyy-MM-dd')===format((currentDate),'yyyy-MM-dd'));
         setTodayBooking(today);
-        setInHouse(inhouse);
+        setTodayDeparture(todaydep);
+        setInHouse(inhouse);  
+        console.log(todaydep);
+        
       })
       .catch((err) => console.log(err.response));
   });
+  const renderTable=(title)=>{
+    if(title==="All Reservations")
+    {
+      return(
+        <div className="table">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Rooms</th>
+              <th>Full Name</th>
+              <th>Guest count</th>
+              <th>Arrived at</th>
+              <th>Departure</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.map((element) => {
+              return (
+                <tr>
+                  <td>{element.bookingId}</td>
+                  <td>
+                    <ul>
+                      {element.rooms.map((room) => {
+                        return <li>{room}</li>;
+                      })}
+                    </ul>
+                  </td>
+                  <td>
+                    {element.firstName + " " + element.lastName}
+                  </td>
+                  <td>{element.guestCount}</td>
+                  <td>
+                    {format(
+                      parseISO(element.arrivalDate),
+                      "yyyy-MM-dd"
+                    )}
+                  </td>
+                  <td>
+                    {format(
+                      parseISO(element.departureDate),
+                      "yyyy-MM-dd"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+      )
+    }
+    else if(title=="Today Reservations"){
+      return(
+        <div className="table">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Rooms</th>
+              <th>Full Name</th>
+              <th>Guest count</th>
+            
+              <th>Departure</th>
+            </tr>
+          </thead>
+          <tbody>
+            {todayBooking.map((element) => {
+              return (
+                <tr>
+                  <td>{element.bookingId}</td>
+                  <td>
+                    <ul>
+                      {element.rooms.map((room) => {
+                        return <li>{room}</li>;
+                      })}
+                    </ul>
+                  </td>
+                  <td>
+                    {element.firstName + " " + element.lastName}
+                  </td>
+                  <td>{element.guestCount}</td>
+                 
+                  <td>
+                    {format(
+                      parseISO(element.departureDate),
+                      "yyyy-MM-dd"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+      )
+    }
+    else if(title=="In House"){
+      return(
+        <div className="table">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Rooms</th>
+              <th>Full Name</th>
+              <th>Guest count</th>
+              <th>Arrived at</th>
+              <th>Departure</th>
+            </tr>
+          </thead>
+          <tbody>
+            {inHouse.map((element) => {
+              return (
+                <tr>
+                  <td>{element.bookingId}</td>
+                  <td>
+                    <ul>
+                      {element.rooms.map((room) => {
+                        return <li>{room}</li>;
+                      })}
+                    </ul>
+                  </td>
+                  <td>
+                    {element.firstName + " " + element.lastName}
+                  </td>
+                  <td>{element.guestCount}</td>
+                  <td>
+                    {format(
+                      parseISO(element.arrivalDate),
+                      "yyyy-MM-dd"
+                    )}
+                  </td>
+                  <td>
+                    {format(
+                      parseISO(element.departureDate),
+                      "yyyy-MM-dd"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+      )
+    }
+    else if(title=="Today Departure"){
+      return(
+        <div className="table">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Rooms</th>
+              <th>Full Name</th>
+              <th>Guest count</th>
+              <th>Arrived at</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {todayDeparture.map((element) => {
+              return (
+                <tr>
+                  <td>{element.bookingId}</td>
+                  <td>
+                    <ul>
+                      {element.rooms.map((room) => {
+                        return <li>{room}</li>;
+                      })}
+                    </ul>
+                  </td>
+                  <td>
+                    {element.firstName + " " + element.lastName}
+                  </td>
+                  <td>{element.guestCount}</td>
+                  <td>
+                    {format(
+                      parseISO(element.arrivalDate),
+                      "yyyy-MM-dd"
+                    )}
+                  </td>
+                  
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+      )
+    }
+  }
   const render=()=>{
     
     return(
@@ -86,85 +287,47 @@ export default function BookingsR() {
             <section className="body-panel">
               Reservations information
               <div className="card-container align-items-center">
-                <div className="cards">
+                <button className="cards" onClick={()=>setTitle("All Reservations")}>
                   <div>
                     <img src={Logo} />
                     <h2>Total Reservations</h2>
                   </div>
                   <div>{bookings.length}</div>
-                </div>
+                </button>
 
-                <div className="cards">
+                <button className="cards" onClick={()=>setTitle("Today Reservations")}>
                   <div>
                     <img src={Logo} />
                     <h2>Today Reservations</h2>
                   </div>
                   <div>{todayBooking.length}</div>
-                </div>
+                </button>
 
-                <div className="cards">
+                <button className="cards" onClick={()=>setTitle("In House")}>
                   <div>
                     <img src={Logo} />
                     <h2>In house</h2>
                   </div>
                   <div>{inHouse.length}</div>
-                </div>
+                </button>
+                <button className="cards" onClick={()=>setTitle("Today Departure")}>
+                  <div>
+                    <img src={Logo} />
+                    <h2>Today departure</h2>
+                  </div>
+                  <div>{todayDeparture.length}</div>
+                </button>
               </div>
               <div className="search-bar">
                 <input type="text" placeholder="Sesssarch here..." />
               </div>
-              <h1>All Reservation</h1>
+              <h1>{title}</h1>
               <div className="scrollpane-container">
                 <div>
                  
                 </div>
                 <Scrollpane>
-                  <div className="table">
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Booking ID</th>
-                          <th>Rooms</th>
-                          <th>Full Name</th>
-                          <th>Guest count</th>
-                          <th>Arrived at</th>
-                          <th>Departure</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {bookings.map((element) => {
-                          return (
-                            <tr>
-                              <td>{element.bookingId}</td>
-                              <td>
-                                <ul>
-                                  {element.rooms.map((room) => {
-                                    return <li>{room}</li>;
-                                  })}
-                                </ul>
-                              </td>
-                              <td>
-                                {element.firstName + " " + element.lastName}
-                              </td>
-                              <td>{element.guestCount}</td>
-                              <td>
-                                {format(
-                                  parseISO(element.arrivalDate),
-                                  "yyyy-MM-dd"
-                                )}
-                              </td>
-                              <td>
-                                {format(
-                                  parseISO(element.departureDate),
-                                  "yyyy-MM-dd"
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </div>
+                 {renderTable(title)}
                 </Scrollpane>
               </div>
             </section>
