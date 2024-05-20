@@ -21,7 +21,7 @@ export default function UpdateEmploye({ employeId }) {
   const [newAddress, setNewAddress] = useState();
   const [newContactNo, setNewContactNo] = useState();
   const [newPassword, setNewPassword] = useState();
-
+  const [availability,setAvailability]=useState("");
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -45,6 +45,7 @@ export default function UpdateEmploye({ employeId }) {
         setNewAddress(res.data.address);
         setNewContactNo(res.data.contactNo);
         setNewPassword(res.data.password);
+        setAvailability(res.data.availability);
         console.log(res.data);
       })
       .catch((err) => console.log({ message: err.message }));
@@ -60,10 +61,10 @@ export default function UpdateEmploye({ employeId }) {
     formData.append("contactNo", newContactNo);
     formData.append("position", newposition);
     formData.append("password", newPassword);
+    formData.append("availability",availability);
     axios
-      .put(
-        `http://localhost:8080/Employes/update-employe/${employeId}`,
-        formData,
+      .patch(
+        `http://localhost:8080/Employes/update-employe/patch/${employeId}`,formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -204,6 +205,8 @@ export default function UpdateEmploye({ employeId }) {
                   />
                 </th>
               </tr>
+              
+             
             </tbody>
           </Table>
           <Button onClick={btnUpdateClicked}>Update</Button>

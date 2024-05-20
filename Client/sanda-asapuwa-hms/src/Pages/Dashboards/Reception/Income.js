@@ -9,6 +9,7 @@ import SidePanel from "../../../Components/SidePanel";
 import Table from "react-bootstrap/Table";
 import { Button } from "react-bootstrap";
 import {ClipLoader} from  'react-spinners';
+import ScrollPane from "../../../Components/Scrollpane";
 export default function Income() {
   const { id } = useParams();
   const [todayIncome, setTodayIncome] = useState(0);
@@ -303,7 +304,9 @@ export default function Income() {
             </div>
           </section>
           <h1>{title}</h1>
-          <section className="body">{renderTable(title)}</section>
+          <section className="body">
+          <div className="scrollpane-container"> <ScrollPane height='50vh' width='75vw'> {renderTable(title)}</ScrollPane></div>
+            </section>
         </section>
       </div>
     );

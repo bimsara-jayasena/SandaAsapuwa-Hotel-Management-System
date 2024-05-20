@@ -17,7 +17,7 @@ import ScrollPane from "../../../Components/Scrollpane";
 export default function ManagerDash() {
   let roomCount = 0;
   let availableRoomCount = 0;
-  let booked = 0;
+ 
   const { id } = useParams();
 
   const [firstName, setFirstName] = useState("");
@@ -26,12 +26,12 @@ export default function ManagerDash() {
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(true);
   const [employes, setEmployes] = useState([]);
-  const [availableEmployes, setAvailableEmployes] = useState([]);
-  const [guest, setGuest] = useState([]);
+  
+  const [inhouse, setInHouse] = useState([]);
   const [booking, setBooking] = useState([]);
+  const [booked, setBooked] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const bookingRef = useRef(booking);
-  const employeRef = useRef(availableEmployes);
   const [checked, setChecked] = useState(false);
   const [radioValue, setRadioValue] = useState("1");
   const [income, setIncome] = useState(0);
@@ -89,52 +89,31 @@ export default function ManagerDash() {
     axios
       .get(`http://localhost:8080/Employes`)
       .then((res) => {
-        setEmployes(res.data);
+        const arr=res.data.filter(element=>element.availability==='available')
+        setEmployes(arr);
       })
       .catch((err) => console.log(err.response));
   }, []);
 
-  useEffect(() => {
-    employeRef.current = availableEmployes;
-  }, [availableEmployes]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      axios
-        .get(`http://localhost:8080/Employes`)
-        .then((res) => {
-          const emp = res.data.filter(
-            (element) => element.position === "available"
-          );
-          if (JSON.stringify(employeRef.current) !== JSON.stringify(emp)) {
-            toast.success("New employee added");
-            setAvailableEmployes(emp);
-          }
-        })
-        .catch((err) => console.log(err.response));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-  useEffect(() => {
-    console.log(availableEmployes);
-  }, [availableEmployes]);
+ 
 
   /* Get all bookings */
   useEffect(() => {
     bookingRef.current = booking;
   }, [booking]);
-  const guestRef = useRef(guest);
-  useEffect(() => {
-    guestRef.current = guest;
-  }, [guest]);
+ 
+  
+
+  const bookedRoomsRef=useRef([]);
+  useEffect(()=>{
+    bookedRoomsRef.current=booked;
+  },[booked])
   useEffect(() => {
     axios
       .get("http://localhost:8080/Bookings")
       .then((res) => {
         setBooking(res.data);
-        const count = res.data.filter(
-          (element) => element.status === "confirmed"
-        );
-        setGuest(count);
+        
       })
       .catch((err) => {
         console.log(err);
@@ -146,19 +125,41 @@ export default function ManagerDash() {
           if (JSON.stringify(bookingRef.current) !== JSON.stringify(res.data)) {
             toast.success("New Booking!");
             setBooking(res.data);
+            
           }
-          const count = res.data.filter(
-            (element) => element.status === "confirmed"
-          );
-          if (JSON.stringify(guestRef.current) !== JSON.stringify(res.data)) {
-            setGuest(count);
-          }
+          
+         
         })
         .catch((err) => console.log(err.response));
+        /* Get booked rooms */
+        axios
+        .get(`http://localhost:8080/Rooms`)
+        .then((res) => {
+          const arr=res.data.filter(element=>element.availability==='booked')
+          if (JSON.stringify(bookingRef.current) !== JSON.stringify(arr)) {
+           setBooked(arr);
+            
+          }
+         
+        })
+        .catch((err) => console.log(err.response));
+
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-  /* get guest */
+  
+  /* get inhouse count */
+  useEffect(()=>{
+    const arr=[];
+     booking.forEach((element)=>{
+       const departureDate=new Date(format((element.departureDate),'yyyy-MM-dd'));
+       if((departureDate.getMonth()===currentDate.getMonth()&&departureDate.getDate()>currentDate.getDate()) || (departureDate.getMonth>currentDate.getMonth)){
+         arr.push(element);
+       }
+     }
+     )
+     setInHouse(arr);
+   },[booking])
 
   /* Get income */
   useEffect(() => {
@@ -175,7 +176,7 @@ export default function ManagerDash() {
       .catch((err) => console.log(err));
   }, [booking]);
 
-  useEffect(() => {
+  /* seEffect(() => {
     axios
       .get(`http://localhost:8080/Bookings`)
       .then((res) => {
@@ -185,7 +186,7 @@ export default function ManagerDash() {
         setGuest(result);
       })
       .catch((err) => console.log(err.response));
-  }, [booking]);
+  }, [booking]); */
 
   const changeView = (value) => {
     if (value == 1) {
@@ -312,7 +313,7 @@ export default function ManagerDash() {
                       <img src={Logo} />
                       <h2>Booked Rooms</h2>
                     </div>
-                    <div>{booking.length}</div>
+                    <div>{booked.length}</div>
                   </div>
 
                   <div className="cards">
@@ -320,7 +321,7 @@ export default function ManagerDash() {
                       <img src={Logo} />
                       <h2>In house Guest</h2>
                     </div>
-                    <div>{guest.length}</div>
+                    <div>{inhouse.length}</div>
                   </div>
 
                   <div className="cards">
@@ -328,7 +329,7 @@ export default function ManagerDash() {
                       <img src={Logo} />
                       <h2>Staff Count</h2>
                     </div>
-                    <div>{availableEmployes.length}</div>
+                    <div>{employes.length}</div>
                   </div>
                   <div className="cards">
                     <div>

@@ -72,12 +72,27 @@ export default function BookingsR() {
         const todaydep=res.data.filter(element=>format(parseISO(element.departureDate),'yyyy-MM-dd')===format((currentDate),'yyyy-MM-dd'));
         setTodayBooking(today);
         setTodayDeparture(todaydep);
-        setInHouse(inhouse);  
+        
         console.log(todaydep);
         
       })
       .catch((err) => console.log(err.response));
   });
+  /* get inhouse count */
+  useEffect(()=>{
+    const arr=[];
+     bookings.forEach((element)=>{
+       const departureDate=new Date(format((element.departureDate),'yyyy-MM-dd'));
+       if((departureDate.getMonth()===currentDate.getMonth()&&departureDate.getDate()>currentDate.getDate()) || (departureDate.getMonth>currentDate.getMonth)){
+         arr.push(element);
+       }
+     
+ 
+ 
+     }
+     )
+     setInHouse(arr);
+   },[bookings])
   const renderTable=(title)=>{
     if(title==="All Reservations")
     {

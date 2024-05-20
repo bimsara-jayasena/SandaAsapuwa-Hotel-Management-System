@@ -20,6 +20,7 @@ export default function ReceptDash() {
   let booked = 0;
 
   const { id } = useParams();
+  const [bookingId,setBookingId]=useState('');
   const [validated, setValidated] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -234,9 +235,25 @@ export default function ReceptDash() {
   const handleGuest = () => {
     setShowGuest(!showGuest);
   };
-  const handleConfirm = (event) => {
+  const checkToken=()=>{
+    let correct=false;
+    //check if token is correct or not
+    axios.get(`http://localhost:8080/Bookings/get-booking/booking/${bookingId}`)
+    .then((res)=>{
+      if(res.data.token===token){
+        correct=true;
+      }
+      return correct;
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+
+  }
+  const confirmBooking = () => {
     /* Update status */
-    const id = event.target.id;
+
+    if(checkToken()){
     const formData = new FormData();
     formData.append("Status", "confirmed");
     axios
@@ -251,19 +268,24 @@ export default function ReceptDash() {
       )
       .then((res) => {
         toast.success("Confirmed");
-        event.target.value = "confirmed";
-        event.target.disabled = true;
+       
       })
       .catch((err) => console.log(err));
+    }
+    else{
+      toast.error("incorrect Token");
+    }
     /* send data to counter collection */
   };
   const close = () => {
     setClicked(false);
   };
 
-  const handleToken=()=>{
-    //check if token is correct or not
+  const handleClick=(event,id)=>{
+    setBookingId(id);
+    setClicked(true);
   }
+ 
   useEffect(()=>{
     let total=0;
     axios.get('http://localhost:8080/Payment/get-payment')
@@ -355,7 +377,7 @@ export default function ReceptDash() {
                         <div>
                           <div className="crud-container">
                             <div className="crud-img">
-                              <img src="" alt={guest.images} />
+                              <img src={Logo} alt={guest.images} />
                             </div>
                             <div className="crud-info">
                               booking Id:{guest.bookingId}
@@ -378,7 +400,7 @@ export default function ReceptDash() {
                           <div>
                             <div className="crud-container">
                               <div className="crud-img">
-                                <img src="" alt={booking.images} />
+                                <img src={Logo} alt={booking.images}/>
                               </div>
                               <div className="crud-info">
                                 booking Id:{booking.bookingId}
@@ -400,7 +422,7 @@ export default function ReceptDash() {
                                       ? "Confirmed"
                                       : "Confirm"
                                   }
-                                  onClick={() => setClicked(true)}
+                                  onClick={(e) => handleClick(e,booking.bookingId)}
                                   disabled={
                                     booking.status === "confirmed"
                                       ? true
@@ -428,7 +450,7 @@ export default function ReceptDash() {
                           <div>
                             <div className="crud-container">
                               <div className="crud-img">
-                                <img src="" alt={booking.images} />
+                                <img src={Logo} alt={booking.images} />
                               </div>
                               <div className="crud-info">
                                 booking Id:{booking.bookingId}
@@ -501,7 +523,7 @@ export default function ReceptDash() {
                 />
                 <Form.Control.Feedback type="invalid" className="bold" />
               </Form.Group>
-              <Button type="submit" onClick={()=>handleToken()}>Confirme</Button>
+              <Button type="submit" onClick={()=>confirmBooking()}>Confirme</Button>
                
              
             </Form>
