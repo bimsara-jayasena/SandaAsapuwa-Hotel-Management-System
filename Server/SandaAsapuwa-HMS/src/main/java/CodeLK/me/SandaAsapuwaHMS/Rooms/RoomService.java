@@ -74,29 +74,22 @@ public class RoomService {
         return rooms;
     }
 
-    public Rooms updateRoom(String roomId,String availability,String image){
+    public Rooms updateRoom(String roomId,String availability,String image,Integer key,Integer price){
         Optional<Rooms> roomsOptional=repository.findByroomId(roomId);
         Rooms room=roomsOptional.orElseThrow(()->{
             throw new NullPointerException("No room exist");
 
         });
-        room.setAvailability(availability);
-        room.setImages(image);
+        if(availability!=null){room.setAvailability(availability);}
+        if(image!=null){room.setImages(image);}
+        if(key!=null){room.setKeyNum(key);}
+        if(price!=null){room.setPrice(price);}
+
         repository.save(room);
         return room;
     }
 
-    public Rooms updateAvailability(Integer keyNum,String availability){
-        Optional<Rooms> roomsOptional=repository.findBykeyNum(keyNum);
-        Rooms room=roomsOptional.orElseThrow(()->{
-            throw new NullPointerException("No room exist");
 
-        });
-        room.setAvailability(availability);
-        room.setImages(room.getImages());
-        repository.save(room);
-        return room;
-    }
 
     public String deleteRoom(String roomId) {
         Optional<Rooms> roomsOptional=repository.findByroomId(roomId);

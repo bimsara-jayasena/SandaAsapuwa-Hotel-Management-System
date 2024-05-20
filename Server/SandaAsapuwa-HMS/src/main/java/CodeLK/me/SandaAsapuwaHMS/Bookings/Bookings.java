@@ -6,7 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import org.apache.commons.lang3.RandomStringUtils;
 import java.util.Date;
 import java.util.UUID;
 
@@ -21,6 +21,7 @@ public class Bookings {
     private Object[] rooms;
     private Object[] keys;
     private String bookingId;
+    private String token;
     private String firstName;
     private String lastName;
     private String eMail;
@@ -36,7 +37,7 @@ public class Bookings {
 
     public Bookings(Object[] rooms,Object[] keys,String firstName, String lastName, String eMail,String pickUp, String contactNo, Integer guestCount, Date arrivalDate, Date departureDate) {
         this.bookingId=setBookingId();
-
+        this.token=generateToken();
         this.rooms=rooms;
         this.keys=keys;
         this.firstName = firstName;
@@ -49,7 +50,12 @@ public class Bookings {
         this.departureDate=departureDate;
         this.status="unconfirmed";
     }
-
+    public String generateToken(){
+        return RandomStringUtils.randomAlphanumeric(4);
+    }
+    public String getToken(){
+        return token;
+    }
     public Object[] getKeys() {
         return keys;
     }

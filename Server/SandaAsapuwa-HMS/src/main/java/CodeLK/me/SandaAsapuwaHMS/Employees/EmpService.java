@@ -107,15 +107,15 @@ public class EmpService {
             throw new NullPointerException("No Resources found");
         });
 
-        employe.setProfileImg(img);
-        employe.setFirstName(firstName);
-        employe.setLastName(lastName);
-        employe.seteMail(eMail);
-        employe.setAddress(address);
-        employe.setContactNo(contactNo);
-        employe.setPosition(position);
-        employe.setPassword(password);
-        employe.setAvailablity(availability);
+        if(img!=null){employe.setProfileImg(img);}
+        if(firstName!=null){ employe.setFirstName(firstName);}
+        if(lastName!=null){employe.setLastName(lastName);}
+        if(eMail!=null){employe.seteMail(eMail);}
+        if(address!=null){employe.setAddress(address);}
+        if(contactNo!=null){employe.setContactNo(contactNo);}
+        if(position!=null){employe.setPosition(position);}
+        if(password!=null){employe.setPassword(password);}
+        if(availability!=null){employe.setAvailablity(availability);}
         repository.save(employe);
         return employe;
 

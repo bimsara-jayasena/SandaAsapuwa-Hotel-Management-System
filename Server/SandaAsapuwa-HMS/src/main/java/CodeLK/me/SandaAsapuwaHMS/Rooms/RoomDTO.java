@@ -10,7 +10,7 @@ public class RoomDTO {
     @Id
     private ObjectId id;
      private String roomId;
-
+    private String token;
     private  String availability;
 
     private  String images;

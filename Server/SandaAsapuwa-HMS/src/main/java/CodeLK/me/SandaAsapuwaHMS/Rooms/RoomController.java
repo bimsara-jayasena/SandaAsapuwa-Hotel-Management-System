@@ -49,16 +49,20 @@ public class RoomController {
     @PutMapping("/update-room/{roomId}")
     public ResponseEntity<Rooms> updateRoom(
             @PathVariable String roomId,
-            @RequestParam("image") String image,
-            @RequestParam("availability") String availability) throws IOException {
-        return new ResponseEntity<Rooms>(service.updateRoom(roomId,availability,image), HttpStatus.CREATED);
+            @RequestParam(value = "image" , required = false) String image,
+            @RequestParam(value = "availability",required = false) String availability,
+            @RequestParam(value = "key",required = false) Integer key,
+            @RequestParam(value = "price",required = false) Integer price) throws IOException {
+        return new ResponseEntity<Rooms>(service.updateRoom(roomId,availability,image,key,price), HttpStatus.CREATED);
     }
-    @PatchMapping("/update-room/{keyNum}")
-    public ResponseEntity<Rooms> updateAvailability(
-            @PathVariable Integer keyNum,
-
-            @RequestParam("availability") String availability) throws IOException {
-        return new ResponseEntity<Rooms>(service.updateAvailability(keyNum,availability), HttpStatus.CREATED);
+    @PatchMapping("/update-room/patch/{roomId}")
+    public ResponseEntity<Rooms> patchRoom(
+            @PathVariable String roomId,
+            @RequestParam(value = "image" , required = false) String image,
+            @RequestParam(value = "availability",required = false) String availability,
+            @RequestParam(value = "key",required = false) Integer key,
+            @RequestParam(value = "price",required = false) Integer price) throws IOException {
+        return new ResponseEntity<Rooms>(service.updateRoom(roomId,availability,image,key,price), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove-room/{roomId}")

@@ -91,6 +91,31 @@ public class EmpController {
                 availability
         ),HttpStatus.OK);
     }
+    @PatchMapping("update-employe/patch/{empId}")
+    public ResponseEntity<Employes> patchEmploye(
+            @PathVariable String empId,
+            @RequestParam(value = "profile-image",required = false)String profileImg,
+            @RequestParam(value = "firstName",required = false) String firstName,
+            @RequestParam(value = "lastName",required = false)String lastName,
+            @RequestParam(value = "eMail",required = false)String email,
+            @RequestParam(value = "address",required = false)String address,
+            @RequestParam(value = "contactNo",required = false)String contactNo,
+            @RequestParam(value = "position",required = false)String position,
+            @RequestParam(value = "password",required = false)String password,
+            @RequestParam(value = "availability",required = false) String availability)throws IOException{
+        return new ResponseEntity<Employes>(service.updateEmployee(
+                empId,
+                profileImg,
+                firstName,
+                lastName,
+                email,
+                address,
+                contactNo,
+                position,
+                password,
+                availability
+        ),HttpStatus.OK);
+    }
 
     @DeleteMapping("/delete-employe/{empId}")
     public String removeEmploye(@PathVariable String empId){
