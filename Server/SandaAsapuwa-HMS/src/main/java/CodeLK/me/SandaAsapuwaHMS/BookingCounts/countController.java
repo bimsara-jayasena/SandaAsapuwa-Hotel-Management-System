@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +21,29 @@ public class countController {
     public ResponseEntity<List<BookingCounts>> getCounts(){
         return new ResponseEntity<List<BookingCounts>>(countService.getCounts(), HttpStatus.OK);
     }
+    @GetMapping("/get-counts/{start}/{end}")
+    public ResponseEntity<List<BookingCounts>> getCounts(
+            @PathVariable("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date start,
+            @PathVariable("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date end
+    ){
+        return new ResponseEntity<List<BookingCounts>>(countService.getCountsDateRange(start, end), HttpStatus.OK);
+    }
+
+    @GetMapping("/totalBookingsForMonths/{year}/{month}")
+    public int getTotalBookings(@PathVariable("year") int year, @PathVariable("month") int month) {
+        return countService.getTotalBookingsForMonth(year, month);
+    }
+
+    @GetMapping("/totalBookingsForYear/{year}")
+    public int getTotalBookingsWithinYear(@PathVariable("year") int year) {
+        return countService.getTotalCountForYear(year);
+    }
     @PostMapping("/Add-count")
     public ResponseEntity<BookingCounts> addCounts(
-            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd") Date date,
+
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,pattern = "yyyy-MM-dd")Date  date,
             @RequestParam("count") Integer count
+
     ){
         return new ResponseEntity<BookingCounts>(countService.addBookingCounts(date,count),HttpStatus.CREATED);
     }

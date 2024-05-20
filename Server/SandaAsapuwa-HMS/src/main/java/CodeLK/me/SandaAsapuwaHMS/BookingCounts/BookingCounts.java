@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,19 +19,20 @@ public class BookingCounts {
     private ObjectId id;
 
     private String counterId;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME ,pattern =  "yyyy-MM-dd")
-    private Date Date;
+    private Date date;
 
     private Integer count;
 
     public BookingCounts(Date date,Integer count){
         this.counterId=setCounterId();
-        this.Date=date;
+        this.date=date;
         this.count=count;
     }
 
-    public java.util.Date getDate() {
-        return Date;
+    public Date getDate() {
+        return date;
     }
 
     public String getCounterID() {
@@ -38,7 +40,7 @@ public class BookingCounts {
     }
 
     public void setDate(java.util.Date date) {
-        Date = date;
+        date = date;
     }
 
     public Integer getCount() {
