@@ -12,9 +12,11 @@ import Scrollpane from "../../../Components/Scrollpane";
 import AddEmploye from "../../../Components/AddEmploye";
 import Abscene from "../../../Components/Abscene";
 import EmployeInfo from "../../../Components/EmployeInfo";
+import staff from '../../../Resources/icons/staff.png';
 import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
 import UpdateEmploye from "../../../Components/UpdateEmploye";
+import { elements } from "chart.js";
 export default function Staff() {
   
   const { id } = useParams();
@@ -124,19 +126,13 @@ export default function Staff() {
           <div className="card-container align-items-center">
             <div className="cards">
               <div>
-                <img src={Logo} />
+                <img src={staff} />
                 <h2>Total Employees</h2>
               </div>
               <div>{empCount}</div>
             </div>
 
-            <button className="cards" onClick={() => setShowAb(true)}>
-              <div>
-                <img src={Logo} />
-                <h2>Abscens</h2>
-              </div>
-              <div>2</div>
-            </button>
+            
           </div>
           <div className="search-bar">
             <input type="text" placeholder="Search here..." />
@@ -167,7 +163,6 @@ export default function Staff() {
                       <th>Employee Id</th>
                       <th>Name</th>
                       <th>position</th>
-                     
                       <th>Contact No</th>
                       <th>availability</th>
                       <th></th>
@@ -186,7 +181,7 @@ export default function Staff() {
                             {employe.firstName} {employe.lastName}
                           </td>
                           <td>{employe.position}</td>
-                          
+                         
                           <td>{employe.contactNo}</td>
                           <td>available</td>
                           <td>

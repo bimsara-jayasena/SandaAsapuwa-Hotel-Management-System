@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Scrollpane from "../../../Components/Scrollpane";
 import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
-export default function SettingsR() {
+export default function Bookings() {
   const { id } = useParams();
 
   const [firstName, setFirstName] = useState("");
@@ -17,21 +17,18 @@ export default function SettingsR() {
   const [position, setPosition] = useState("");
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(true);
-  const [account,setAccount]=useState();
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/Employes/empid/${id}`)
       .then((res) => {
-        setAccount(res.data);
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
         setPosition(res.data.position);
         setProfile(res.data.profileImg);
-        
       })
       .catch((err) => console.log(err.response));
   });
- 
   const click=()=>{
     alert("clicked");
   }
@@ -54,47 +51,65 @@ export default function SettingsR() {
          
 
           
+            <div className="table-container">
+            <div>
+               {/* {loading ? (
+                <div className="loading-screen-container-scrollpane">
+                  <div className="loading-screen-scrollpane"></div>
+                  <ClipLoader
+                    color="dodgerblue"
+                    loading={true}
+                    size={150}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                    className="loading-spinner"
+                  />
+                </div>
+              ) : (
+                <></>
+              )}  */}
+            </div>
           
-            
-         <div className="table-container">
               <div className="table">
                 <Table striped bordered hover>
                  
                   <tbody>
                     <tr>
                       <th>Employee Id</th>
-                        <th>{account.empId}</th>
+                        <th>1</th>
                     </tr>
                     <tr>
                         <th>First Name</th>
-                        <th>{account.firstName}</th>
+                        <th>mark</th>
                     </tr>
                     <tr>
                       <th>lastName</th>
-                        <th>{account.lastName}</th>
+                        <th>ff</th>
                     </tr>
                     <tr>
                         <th>Address</th>
-                        <th>{account.address}</th>
+                        <th>1</th>
                     </tr>
                     <tr>
                       <th>E-Mail </th>
-                        <th>{account.eMail}</th>
+                        <th>1</th>
                     </tr>
                     <tr>
                         <th>Contact No</th>
-                        <th>{account.contactNo}</th>
+                        <th>1</th>
                     </tr>
-                    
+                    <tr>
+                        <th>Password</th>
+                        <th>1</th>
+                    </tr>
                   </tbody>
                   
 
                 </Table>
               </div>
-           
+            <Button variant="danger">Remove Account</Button>
+            <Button >Update Account</Button>
           </div> 
-          
-         
 
            
            

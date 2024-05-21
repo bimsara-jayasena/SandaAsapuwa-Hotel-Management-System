@@ -10,11 +10,11 @@ import Table from "react-bootstrap/Table";
 import { Button } from "react-bootstrap";
 import { ClipLoader } from "react-spinners";
 import ScrollPane from "../../../Components/Scrollpane";
-import Calendar from "react-calendar";
 import totalincome from '../../../Resources/icons/total-income.png';
 import todayincome from '../../../Resources/icons/today-income.png';
 import cardpayment from '../../../Resources/icons/credit-card.png';
 import cashpayment from '../../../Resources/icons/cash.png';
+import Calendar from "react-calendar";
 export default function Income() {
   const { id } = useParams();
   const [todayIncome, setTodayIncome] = useState(0);
@@ -382,7 +382,7 @@ export default function Income() {
                     <img src={totalincome} />
                     <h2>Total Income</h2>
                   </div>
-                  <div>{totalIncome}</div>
+                  <div>${totalIncome}</div>
                 </button>
 
                 <button
@@ -393,7 +393,7 @@ export default function Income() {
                     <img src={todayincome} />
                     <h2>Today Income</h2>
                   </div>
-                  <div>{todayIncome}</div>
+                  <div>${todayIncome}</div>
                 </button>
 
                 <button
@@ -404,7 +404,7 @@ export default function Income() {
                     <img src={cardpayment} />
                     <h2>Card Payments</h2>
                   </div>
-                  <div>{cardPayments}</div>
+                  <div>${cardPayments}</div>
                 </button>
 
                 <button
@@ -415,7 +415,7 @@ export default function Income() {
                     <img src={cashpayment} />
                     <h2>Cash Payments</h2>
                   </div>
-                  <div>{cashPayments}</div>
+                  <div>${cashPayments}</div>
                 </button>
               </div>
             </section>

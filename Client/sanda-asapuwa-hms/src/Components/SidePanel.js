@@ -9,6 +9,48 @@ export default function SidePanel({id,firstName,lastName, position,profile} ){
         
         setisVisited(!isVisited);
     }
+    const render=()=>{
+        if(position==="Manager") {
+               return(
+                <>
+                <Link to={`/Manager/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
+               <Link to={`/Rooms/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
+               <Link to={`/Staff/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
+               <Link to={`/Booking/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
+               <Link to={`/Income/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Income</button></Link>
+               <Link to={`/Settings/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
+                </>
+               )
+        }
+        else if(position==="Reception"){
+            return(
+                <>
+                 <Link to={`/Reception/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
+                <Link to={`/Rooms-r/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
+                <Link to={`/Staff-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
+                <Link to={`/Booking-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
+                <Link to={`/Income-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Income</button></Link>
+                <Link to={`/Settings-r/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
+                 </>
+            )
+        }
+        else {
+            return(
+                <>
+                 <Link to={`/Admin/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
+                <Link to={`/RoomsA/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
+                <Link to={`/StaffA/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
+                <Link to={`/BookingA/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
+                <Link to={`/IncomeA/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Income</button></Link>
+                <Link to={`/SettingsA/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
+                 </>
+            )
+        }
+                 
+            
+            
+    
+    }
     return(
         <div className="side-panel-body">
             <section className="side-panel">
@@ -20,27 +62,7 @@ export default function SidePanel({id,firstName,lastName, position,profile} ){
                     </div>
                 </div>
 
-                {position==="Manager" ? 
-                 <>
-                 <Link to={`/Manager/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
-                <Link to={`/Rooms/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
-                <Link to={`/Staff/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
-                <Link to={`/Booking/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
-                <Link to={`/Income/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Income</button></Link>
-                <Link to={`/Settings/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
-                 </>
-                 :
-                 <>
-                 <Link to={`/Reception/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Dasboard</button></Link>
-                <Link to={`/Rooms-r/${id}`}> <button className="side-btn-room" onClick={(e)=>{handleClickEvents(e)}}>Rooms</button></Link>
-                <Link to={`/Staff-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Staff</button></Link>
-                <Link to={`/Booking-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Bookings</button></Link>
-                <Link to={`/Income-r/${id}`}> <button className="side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Income</button></Link>
-                <Link to={`/Settings-r/${id}`}> <button className= "side-btn-room" onClick={()=>{setisVisited(!isVisited)}}>Account Settings</button></Link>
-                 </>
-            
-            
-    }
+                {render()}
                 <div> <img src={Logo}/></div>
             </section>
             

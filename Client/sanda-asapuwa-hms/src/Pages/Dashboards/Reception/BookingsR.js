@@ -11,6 +11,9 @@ import { ClipLoader } from "react-spinners";
 import { Alert } from "react-bootstrap";
 import { format, parseISO } from "date-fns";
 import { elements } from "chart.js";
+import totalbooking from '../../../Resources/icons/total-reservations.png'
+import todayreservation from '../../../Resources/icons/todayArrival.png';
+import guests from '../../../Resources/icons/guest.png'
 export default function BookingsR() {
   const { id } = useParams();
 
@@ -304,7 +307,7 @@ export default function BookingsR() {
               <div className="card-container align-items-center">
                 <button className="cards" onClick={()=>setTitle("All Reservations")}>
                   <div>
-                    <img src={Logo} />
+                    
                     <h2>Total Reservations</h2>
                   </div>
                   <div>{bookings.length}</div>
@@ -312,7 +315,7 @@ export default function BookingsR() {
 
                 <button className="cards" onClick={()=>setTitle("Today Reservations")}>
                   <div>
-                    <img src={Logo} />
+                   
                     <h2>Today Reservations</h2>
                   </div>
                   <div>{todayBooking.length}</div>
@@ -320,14 +323,14 @@ export default function BookingsR() {
 
                 <button className="cards" onClick={()=>setTitle("In House")}>
                   <div>
-                    <img src={Logo} />
+                   
                     <h2>In house</h2>
                   </div>
                   <div>{inHouse.length}</div>
                 </button>
                 <button className="cards" onClick={()=>setTitle("Today Departure")}>
                   <div>
-                    <img src={Logo} />
+                   
                     <h2>Today departure</h2>
                   </div>
                   <div>{todayDeparture.length}</div>
@@ -341,7 +344,7 @@ export default function BookingsR() {
                 <div>
                  
                 </div>
-                <Scrollpane>
+                <Scrollpane height='50vh' width='75vw'>
                  {renderTable(title)}
                 </Scrollpane>
               </div>

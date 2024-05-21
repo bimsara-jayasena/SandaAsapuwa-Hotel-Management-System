@@ -28,7 +28,7 @@ export default function AddEmploye() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    if (form.checkValidity() === false || (isNaN(contactNo))) {
      
       event.stopPropagation();
     }

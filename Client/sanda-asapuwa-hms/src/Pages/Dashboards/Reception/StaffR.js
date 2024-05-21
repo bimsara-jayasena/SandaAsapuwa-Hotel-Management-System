@@ -50,7 +50,8 @@ export default function StaffR() {
     axios
       .get(`http://localhost:8080/Employes`)
       .then((res) => {
-        setEmployes(res.data);
+        const arr=res.data.filter(element=>element.position!=='Admin');
+        setEmployes(arr);
         
 
       })
@@ -147,8 +148,7 @@ export default function StaffR() {
                       <th>Employee Id</th>
                       <th>Name</th>
                       <th>position</th>
-                      <th>Shift On</th>
-                      <th>Shift Off</th>
+                      
                       <th>Contact No</th>
                       <th>availability</th>
                       <th></th>
@@ -167,8 +167,7 @@ export default function StaffR() {
                             {employe.firstName} {employe.lastName}
                           </td>
                           <td>{employe.position}</td>
-                          <td>06AM</td>
-                          <td>05PM</td>
+                          
                           <td>{employe.contactNo}</td>
                           <td>available</td>
                           

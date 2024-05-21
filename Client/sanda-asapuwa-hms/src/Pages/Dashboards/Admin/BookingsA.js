@@ -351,7 +351,7 @@ export default function Bookings() {
                 <img src={totalreservation} />
                 <h2>Total Reservations</h2>
               </div>
-              <div>2</div>
+              <div>{booking.length}</div>
             </button>
 
             <button

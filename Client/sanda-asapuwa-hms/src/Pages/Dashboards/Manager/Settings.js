@@ -17,11 +17,12 @@ export default function Bookings() {
   const [position, setPosition] = useState("");
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(true);
-
+  const [account,setAccount]=useState();
   useEffect(() => {
     axios
       .get(`http://localhost:8080/Employes/empid/${id}`)
       .then((res) => {
+        setAccount(res.data);
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
         setPosition(res.data.position);
@@ -52,63 +53,41 @@ export default function Bookings() {
 
           
             <div className="table-container">
-            <div>
-               {/* {loading ? (
-                <div className="loading-screen-container-scrollpane">
-                  <div className="loading-screen-scrollpane"></div>
-                  <ClipLoader
-                    color="dodgerblue"
-                    loading={true}
-                    size={150}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                    className="loading-spinner"
-                  />
-                </div>
-              ) : (
-                <></>
-              )}  */}
-            </div>
-          
               <div className="table">
                 <Table striped bordered hover>
                  
                   <tbody>
                     <tr>
                       <th>Employee Id</th>
-                        <th>1</th>
+                        <th>{account.employeId}</th>
                     </tr>
                     <tr>
                         <th>First Name</th>
-                        <th>mark</th>
+                        <th>{account.firstName}</th>
                     </tr>
                     <tr>
                       <th>lastName</th>
-                        <th>ff</th>
+                        <th>{account.lastName}</th>
                     </tr>
                     <tr>
                         <th>Address</th>
-                        <th>1</th>
+                        <th>{account.address}</th>
                     </tr>
                     <tr>
                       <th>E-Mail </th>
-                        <th>1</th>
+                        <th>{account.eMail}</th>
                     </tr>
                     <tr>
                         <th>Contact No</th>
-                        <th>1</th>
+                        <th>{account.contactNo}</th>
                     </tr>
-                    <tr>
-                        <th>Password</th>
-                        <th>1</th>
-                    </tr>
+                    
                   </tbody>
                   
 
                 </Table>
               </div>
-            <Button variant="danger">Remove Account</Button>
-            <Button >Update Account</Button>
+           
           </div> 
 
            

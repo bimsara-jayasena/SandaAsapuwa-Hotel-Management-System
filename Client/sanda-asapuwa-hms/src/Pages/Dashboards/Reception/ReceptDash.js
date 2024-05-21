@@ -349,7 +349,7 @@ export default function ReceptDash() {
             <div className="card-container">
               <button className="cards">
                 <div>
-                  <img src={Logo} />
+                 
                   <h2>Today Income</h2>
                 </div>
                 <div>{income}</div>
@@ -357,7 +357,7 @@ export default function ReceptDash() {
 
               <button className="cards" onClick={handleArrivals}>
                 <div>
-                  <img src={Logo} />
+                 
                   <h2>{arrivals} Arrivals</h2>
                 </div>
                 <div>
@@ -367,7 +367,7 @@ export default function ReceptDash() {
 
               <button className="cards" onClick={handleGuest}>
                 <div>
-                  <img src={Logo} />
+                 
                   <h2>Guest Count</h2>
                 </div>
                 <div>{guest.length}</div>

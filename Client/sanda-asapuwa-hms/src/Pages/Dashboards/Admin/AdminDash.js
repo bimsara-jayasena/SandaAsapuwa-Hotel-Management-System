@@ -309,7 +309,7 @@ export default function ManagerDash() {
                       <img src={TotalIncome} />
                       <h2>Total Income</h2>
                     </div>
-                    <div>${income}</div>
+                    <div>{income}</div>
                   </div>
 
                   <div className="cards">

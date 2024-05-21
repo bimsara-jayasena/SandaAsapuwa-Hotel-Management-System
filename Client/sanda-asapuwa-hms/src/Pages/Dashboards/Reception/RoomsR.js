@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../../StyleSheets/manager.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import  Table  from "react-bootstrap/Table";
 import SidePanel from "../../../Components/SidePanel";
 import UPDATE from "../../../Components/UpdateRoom";
 import ADD from "../../../Components/AddRoom";
@@ -83,72 +84,88 @@ export default function RoomsR() {
   }, [rooms]);
   const renderRoom = () => {
     if (info === "available") {
-        return(
-            <div>
-                {availableRooms.map((room) => {
-           
-              return (
-                <div>
-                  <div className="crud-container">
-                    <div className="crud-img">
-                      <img src="" alt={room.images} />
-                    </div>
-                    <div className="crud-info">
-                      Room status: {room.availability}
-                      <br />
-                      Room Price:
-                    </div>
-                  </div>
-                </div>
-              );
-          })}
-            </div>
-        )
+      return(
+            
+        <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Room Key</th>
+            <th>Catagory</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+         {availableRooms.map((element)=>{
+          return(
+            <tr>
+            <td>{element.roomId}</td>
+            <td>{element.keyNum}</td>
+            <td>{element.catagory}</td>
+            <td>{element.price}</td>
+          </tr>
+          )
+         })}
+        </tbody>
+      </Table>
+      )
     } else if (info === "booked") {
-        return(
-            <div>
-                {booked.map((room) => {
-          
-              return (
-                <div>
-                  <div className="crud-container">
-                    <div className="crud-img">
-                      <img src="" alt={room.images} />
-                    </div>
-                    <div className="crud-info">
-                      Room status: {room.availability}
-                      <br />
-                      Room Price:
-                    </div>
-                  </div>
-                </div>
-              );
-          })}
-            </div>
-        )
+      return(
+            
+        <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Room Key</th>
+            <th>Catagory</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+         {booked.map((element)=>{
+          return(
+            <tr>
+            <td>{element.roomId}</td>
+            <td>{element.keyNum}</td>
+            <td>{element.catagory}</td>
+            <td>{element.price}</td>
+          </tr>
+          )
+         })}
+        </tbody>
+      </Table>
+      )
     } else {
     
           return(
-            <div>
-            {
-           rooms.map((room) => {
-             return (
-               <div>
-                 <div className="crud-container">
-                   <div className="crud-img">
-                     <img src="" alt={room.images} />
-                   </div>
-                   <div className="crud-info">
-                     Room status: {room.availability}
-                     <br />
-                     Room Price:
-                   </div>
-                 </div>
-               </div>
-             );
-           })
-         }
-          </div>
+            
+            <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Room Key</th>
+                <th>Catagory</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+             {rooms.map((element)=>{
+              return(
+                <tr>
+                <td>{element.roomId}</td>
+                <td>{element.keyNum}</td>
+                <td>{element.catagory}</td>
+                <td>{element.price}</td>
+              </tr>
+              )
+             })}
+            </tbody>
+          </Table>
+              
+            
+          
+         
+          
           )
        
    
@@ -193,7 +210,7 @@ export default function RoomsR() {
               }}
             >
               <div>
-                <img src={Logo} />
+               
                 <h2>Total Rooms</h2>
               </div>
               <div>{rooms.length}</div>
@@ -206,7 +223,7 @@ export default function RoomsR() {
               }}
             >
               <div>
-                <img src={Logo} />
+               
                 <h2>Booked Rooms</h2>
               </div>
               <div>{booked.length}</div>
@@ -219,7 +236,7 @@ export default function RoomsR() {
               }}
             >
               <div>
-                <img src={Logo} />
+               
                 <h2>Available Rooms</h2>
               </div>
               <div>{availableRooms.length}</div>
@@ -245,7 +262,7 @@ export default function RoomsR() {
                 <></>
               )}
             </div>
-            <ScrollPane>
+            <ScrollPane height='75vh' width='75vw'>
                 {renderRoom(info)}
               {/* {renderRoom(info)}
 
