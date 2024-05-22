@@ -10,4 +10,4 @@
 </Ul>
 
 <h2>Thank you</h2>
-<h2>Developed by:<b>CodeLK</b></h2>
+
